@@ -49,6 +49,12 @@ public class ARPlacementManager : MonoBehaviour
         confirmButton.onClick.AddListener(ChangeToARModificationMode);
     }
 
+    public void RestartUIFlow ()
+    {
+        movePhoneImage.gameObject.SetActive(true);
+        confirmButton.gameObject.SetActive(false);
+    }
+
     void Update()
     {
         Debug1(movePhoneImage.ToString());
@@ -109,8 +115,8 @@ public class ARPlacementManager : MonoBehaviour
 
     private void ChangeToARModificationMode ()
     {
-        aRManager.SetActiveARPlacementManager(false);
         aRManager.SetActiveARModificationManager(true);
+        aRManager.SetActiveARPlacementManager(false);
     }
 
 
