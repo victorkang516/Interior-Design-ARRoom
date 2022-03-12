@@ -30,7 +30,10 @@ public class ARPlacementManager : MonoBehaviour
 
     Image movePhoneImage;
     Button confirmButton;
+
     Vector3 viewportCenter = new Vector3(0.5f, 0.5f, 0f);
+    Vector3 maxScale = new Vector3(2.0f, 2.0f, 2.0f);
+    Vector3 minScale = new Vector3(0.2f, 0.2f, 0.2f);
 
     #endregion
 
@@ -57,9 +60,7 @@ public class ARPlacementManager : MonoBehaviour
 
     void Update()
     {
-        Debug1(movePhoneImage.ToString());
-        Debug2(confirmButton.ToString());
-
+        
         if (aRModel.activeInHierarchy == false)
         {
             PlaceObject();
@@ -69,6 +70,16 @@ public class ARPlacementManager : MonoBehaviour
             MoveObject();
         }
 
+        
+
+        if (aRModel.transform.localScale.x > maxScale.x)
+        {
+            aRModel.transform.localScale = maxScale;
+        } 
+        else if (aRModel.transform.localScale.x < minScale.x)
+        {
+            aRModel.transform.localScale = minScale;
+        }
     }
 
     private void PlaceObject()
@@ -92,7 +103,10 @@ public class ARPlacementManager : MonoBehaviour
 
     private void MoveObject()
     {
-        if (Input.touchCount > 0)
+        if (IsPointerOverUIObject())
+            return;
+
+        if (Input.touchCount == 1)
         {
             if (raycastManager.Raycast(Input.GetTouch(0).position, hits))
             {
@@ -115,23 +129,20 @@ public class ARPlacementManager : MonoBehaviour
 
     private void ChangeToARModificationMode ()
     {
-        aRManager.SetActiveARModificationManager(true);
-        aRManager.SetActiveARPlacementManager(false);
+        aRModel.GetComponent<Lean.Touch.LeanPinchScale>().enabled = false;
+        aRModel.GetComponent<Lean.Touch.LeanTwistRotateAxis>().enabled = false;
+
+        aRManager.SetActiveARModificationMode(true);
+        aRManager.SetActiveARPlacementMode(false);
     }
 
-
-    // For Development
-    public Text debugText1;
-    public Text debugText2;
-
-    private void Debug1(string message)
+    bool IsPointerOverUIObject()
     {
-        debugText1.text = Time.fixedTime + " :" + message;
-    }
-
-    private void Debug2(string message)
-    {
-        debugText2.text = Time.fixedTime + " :" + message;
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 
 }

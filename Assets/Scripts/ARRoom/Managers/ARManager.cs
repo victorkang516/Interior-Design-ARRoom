@@ -13,8 +13,12 @@ public class ARManager : MonoBehaviour
     GameObject aRModel;
 
     Button resetButton;
+    public Text debug1;
+    public Text debug2;
 
     [SerializeField] GameObject aRModelPrefab;
+
+    int firstCount = 0;
 
     void Start()
     {
@@ -25,28 +29,47 @@ public class ARManager : MonoBehaviour
 
         resetButton = GameObject.Find("/Canvas/ARBasicMode/ResetButton").GetComponent<Button>();
         resetButton.onClick.AddListener(ResetARSession);
+    }
 
-        InitializeARModel();
+    private void Update()
+    {
+        //debug2.text = Time.fixedTime + ":ARManager:" + aRModificationManager.gameObject.activeInHierarchy.ToString();
+        if (firstCount == 0 && aRModificationManager.gameObject.activeInHierarchy && aRPlacementManager.gameObject.activeInHierarchy)
+        {
+            InitializeManagers();
+            InitializeARModel();
+            firstCount++;
+        }
     }
 
     private void ResetARSession ()
     {
         aRSession.Reset();
+        aRModel.GetComponent<Lean.Touch.LeanPinchScale>().enabled = true;
+        aRModel.GetComponent<Lean.Touch.LeanTwistRotateAxis>().enabled = true;
         aRModel.SetActive(false);
-        SetActiveARPlacementManager(true);
-        SetActiveARModificationManager(false);
+        SetActiveARPlacementMode(true);
+        SetActiveARModificationMode(false);
     }
 
-    public void SetActiveARPlacementManager (bool isActive)
+    public void SetActiveARPlacementMode (bool isActive)
     {
-        aRPlacementManager.gameObject.SetActive(isActive);
         aRPlacementManager.RestartUIFlow();
+        aRPlacementManager.gameObject.SetActive(isActive);
+        
     }
 
-    public void SetActiveARModificationManager (bool isActive)
+    public void SetActiveARModificationMode (bool isActive)
     {
-        aRModificationManager.gameObject.SetActive(isActive);
         aRModificationManager.RestartUIFlow();
+        aRModificationManager.gameObject.SetActive(isActive);
+    }
+
+    private void InitializeManagers ()
+    {
+        SetActiveARPlacementMode(true);
+        SetActiveARModificationMode(false);
+        //debug1.text = Time.fixedTime + ":ARManager:" + aRModificationManager.gameObject.activeInHierarchy.ToString();
     }
 
     private void InitializeARModel()

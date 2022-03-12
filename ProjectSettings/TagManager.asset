@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Selectable
+  - Bed
   layers:
   - Default
   - TransparentFX
