@@ -13,8 +13,6 @@ public class ARManager : MonoBehaviour
     GameObject aRModel;
 
     Button resetButton;
-    public Text debug1;
-    public Text debug2;
 
     [SerializeField] GameObject aRModelPrefab;
 
@@ -33,7 +31,6 @@ public class ARManager : MonoBehaviour
 
     private void Update()
     {
-        //debug2.text = Time.fixedTime + ":ARManager:" + aRModificationManager.gameObject.activeInHierarchy.ToString();
         if (firstCount == 0 && aRModificationManager.gameObject.activeInHierarchy && aRPlacementManager.gameObject.activeInHierarchy)
         {
             InitializeManagers();
@@ -48,20 +45,24 @@ public class ARManager : MonoBehaviour
         aRModel.GetComponent<Lean.Touch.LeanPinchScale>().enabled = true;
         aRModel.GetComponent<Lean.Touch.LeanTwistRotateAxis>().enabled = true;
         aRModel.SetActive(false);
+        ResetAllMode();
+    }
+
+    private void ResetAllMode ()
+    {
+        aRPlacementManager.RestartUIFlow();
+        aRModificationManager.RestartUIFlow();
         SetActiveARPlacementMode(true);
         SetActiveARModificationMode(false);
     }
 
     public void SetActiveARPlacementMode (bool isActive)
     {
-        aRPlacementManager.RestartUIFlow();
         aRPlacementManager.gameObject.SetActive(isActive);
-        
     }
 
     public void SetActiveARModificationMode (bool isActive)
     {
-        aRModificationManager.RestartUIFlow();
         aRModificationManager.gameObject.SetActive(isActive);
     }
 
@@ -69,7 +70,6 @@ public class ARManager : MonoBehaviour
     {
         SetActiveARPlacementMode(true);
         SetActiveARModificationMode(false);
-        //debug1.text = Time.fixedTime + ":ARManager:" + aRModificationManager.gameObject.activeInHierarchy.ToString();
     }
 
     private void InitializeARModel()
@@ -82,6 +82,5 @@ public class ARManager : MonoBehaviour
         aRModificationManager.upperWallList = FindObjectsOfType<UpperWall>();
 
         aRModel.SetActive(false);
-
     }
 }

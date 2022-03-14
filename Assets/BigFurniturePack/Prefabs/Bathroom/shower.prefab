@@ -417,13 +417,11 @@ GameObject:
   - component: {fileID: 5191325950810091812}
   - component: {fileID: 7645337625931328086}
   - component: {fileID: 4645630694593980557}
-  - component: {fileID: 8303476726456332757}
-  - component: {fileID: 3852818547825512404}
   - component: {fileID: 2454415290777086480}
   - component: {fileID: 8469843860238160029}
   m_Layer: 0
   m_Name: shower
-  m_TagString: Untagged
+  m_TagString: Shower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -525,44 +523,6 @@ MonoBehaviour:
   axis: {x: 0, y: 0, z: -1}
   space: 1
   sensitivity: 1
---- !u!1818360608 &8303476726456332757
-PositionConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100010}
-  m_Enabled: 1
-  m_Weight: 1
-  m_TranslationAtRest: {x: -2.8974266, y: 3.3838246, z: -5.905}
-  m_TranslationOffset: {x: -2.8974266, y: 3.3838246, z: -5.905}
-  m_AffectTranslationX: 0
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 0
-  m_IsContraintActive: 1
-  m_IsLocked: 0
-  m_Sources:
-  - sourceTransform: {fileID: 0}
-    weight: 1
---- !u!1818360609 &3852818547825512404
-RotationConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100010}
-  m_Enabled: 1
-  m_Weight: 1
-  m_RotationAtRest: {x: -90, y: 0, z: 90}
-  m_RotationOffset: {x: -90, y: 0, z: 90}
-  m_AffectRotationX: 1
-  m_AffectRotationY: 0
-  m_AffectRotationZ: 0
-  m_IsContraintActive: 1
-  m_IsLocked: 0
-  m_Sources:
-  - sourceTransform: {fileID: 0}
-    weight: 1
 --- !u!65 &2454415290777086480
 BoxCollider:
   m_ObjectHideFlags: 0

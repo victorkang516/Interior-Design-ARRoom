@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 149357694}
   - component: {fileID: 149357693}
   m_Layer: 5
-  m_Name: ObjectSelection
+  m_Name: ObjectListPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,7 +281,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 15, y: 0}
+  m_AnchoredPosition: {x: -200, y: 0}
   m_SizeDelta: {x: 400, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &149357693
@@ -334,7 +334,7 @@ GameObject:
   - component: {fileID: 248003801}
   - component: {fileID: 248003800}
   m_Layer: 5
-  m_Name: TabName
+  m_Name: PanelNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -572,8 +572,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edcc437b703407e4da09c98769f049e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug1: {fileID: 1939281285}
-  debug2: {fileID: 1813888558}
   aRModelPrefab: {fileID: 6946006516134407196, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
 --- !u!1 &413035592
 GameObject:
@@ -1255,7 +1253,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 20
+  far clip plane: 40
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1365,7 +1363,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 2340, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &932907884
 GameObject:
@@ -1537,7 +1535,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 2340, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &983203205
 MonoBehaviour:
@@ -2103,7 +2101,7 @@ GameObject:
   - component: {fileID: 1700706861}
   - component: {fileID: 1700706860}
   m_Layer: 5
-  m_Name: Guide
+  m_Name: GuideText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2278,6 +2276,10 @@ MonoBehaviour:
   bedPrefabs:
   - {fileID: 100008, guid: a11d318bf37c01d489a19dc2dc33ed7d, type: 3}
   - {fileID: 100014, guid: b4bf5e3a00974a94ea1549814fc16ebf, type: 3}
+  sofaPrefabs:
+  - {fileID: 100002, guid: b75a9f5bde480c848a601653b942291a, type: 3}
+  - {fileID: 100016, guid: 76f69c2044293fc40a066ff85ecb70df, type: 3}
+  - {fileID: 100002, guid: 578f83cc4b6c9e643bdda64c44bc8aa2, type: 3}
   objectItemPrefab: {fileID: 5973553620464270636, guid: 53728b3536d55b94da9bbdb2b747c42e, type: 3}
 --- !u!114 &1708796705
 MonoBehaviour:
@@ -2355,7 +2357,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 2340, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1744046231
 MonoBehaviour:

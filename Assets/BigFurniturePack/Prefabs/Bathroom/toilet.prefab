@@ -174,13 +174,11 @@ GameObject:
   - component: {fileID: 5787321606961352327}
   - component: {fileID: 1292301468398887419}
   - component: {fileID: 8725845284536811864}
-  - component: {fileID: 6935619874288599986}
-  - component: {fileID: 681348421481886397}
   - component: {fileID: 138945612259090555}
   - component: {fileID: 6194490577864609989}
   m_Layer: 0
   m_Name: toilet
-  m_TagString: Untagged
+  m_TagString: Toilet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -277,44 +275,6 @@ MonoBehaviour:
   axis: {x: 0, y: 0, z: -1}
   space: 1
   sensitivity: 1
---- !u!1818360608 &6935619874288599986
-PositionConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_Weight: 1
-  m_TranslationAtRest: {x: -2.984, y: 3.3890917, z: -5.02}
-  m_TranslationOffset: {x: -2.984, y: 3.3890917, z: -5.02}
-  m_AffectTranslationX: 0
-  m_AffectTranslationY: 1
-  m_AffectTranslationZ: 0
-  m_IsContraintActive: 1
-  m_IsLocked: 0
-  m_Sources:
-  - sourceTransform: {fileID: 0}
-    weight: 1
---- !u!1818360609 &681348421481886397
-RotationConstraint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_Weight: 1
-  m_RotationAtRest: {x: -90, y: 0, z: 180}
-  m_RotationOffset: {x: -90, y: 0, z: 180}
-  m_AffectRotationX: 1
-  m_AffectRotationY: 0
-  m_AffectRotationZ: 0
-  m_IsContraintActive: 1
-  m_IsLocked: 0
-  m_Sources:
-  - sourceTransform: {fileID: 0}
-    weight: 1
 --- !u!65 &138945612259090555
 BoxCollider:
   m_ObjectHideFlags: 0

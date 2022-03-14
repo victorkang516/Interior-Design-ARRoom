@@ -4,8 +4,23 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Selectable
   - Bed
+  - Sofa
+  - Washbin
+  - Selectable
+  - Cabinet
+  - Rack
+  - Toilet
+  - Shower
+  - Lamp
+  - Kitchen Shelf
+  - Modular Kitchen Table
+  - Chair
+  - Kitchen Chair
+  - Coffee Table
+  - Kitchen Table
+  - Table
+  - TV Table
   layers:
   - Default
   - TransparentFX

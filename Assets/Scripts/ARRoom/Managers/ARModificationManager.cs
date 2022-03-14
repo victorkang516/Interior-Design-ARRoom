@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class ARModificationManager : MonoBehaviour
 {
-    SelectionGenerator selectionGenerator;
-    GameObject objectSelection;
+    ObjectListHandler objectListHandler;
+    GameObject objectListPanel;
 
     Button lowerWallButton;
     bool hideWall = false;
@@ -18,11 +18,13 @@ public class ARModificationManager : MonoBehaviour
 
     public Material paintMaterial01;
 
+    float yBoundary;
+
     void Start()
     {
-        selectionGenerator = GameObject.Find("/Canvas/ARModificationMode/ObjectSelection/Scroll/Panel").GetComponent<SelectionGenerator>();
-        objectSelection = GameObject.Find("/Canvas/ARModificationMode/ObjectSelection");
-        objectSelection.SetActive(false);
+        objectListHandler = GameObject.Find("/Canvas/ARModificationMode/ObjectListPanel/Scroll/Panel").GetComponent<ObjectListHandler>();
+        objectListPanel = GameObject.Find("/Canvas/ARModificationMode/ObjectListPanel");
+        objectListPanel.SetActive(false);
 
         lowerWallButton = GameObject.Find("/Canvas/ARModificationMode/HideWallButton").gameObject.GetComponent<Button>();
         lowerWallButton.onClick.AddListener(HideTheWall);
@@ -32,6 +34,8 @@ public class ARModificationManager : MonoBehaviour
     public void RestartUIFlow ()
     {
         lowerWallButton.gameObject.SetActive(true);
+        if (currentSelectable != null)
+            DeselectARObject();
     }
 
     private void HideTheWall()
@@ -55,20 +59,36 @@ public class ARModificationManager : MonoBehaviour
         currentSelectable = leanSelectable.gameObject;
         currentSelectable.GetComponent<Outline>().enabled = true;
 
-        objectSelection.SetActive(true);
-        selectionGenerator.DisplaySelections(currentSelectable);
+        objectListPanel.SetActive(true);
+        objectListHandler.CreateObjectList(currentSelectable);
+
+        yBoundary = currentSelectable.transform.position.y;
     }
 
     public void DeselectARObject()
     {
         currentSelectable.GetComponent<Outline>().enabled = false;
+        currentSelectable = null;
 
-        objectSelection.SetActive(false);
-        selectionGenerator.EmptyScrollList();
+        objectListPanel.SetActive(false);
+        objectListHandler.EmptyObjectList();
     }
+
+
 
     private void Update()
     {
+        if (currentSelectable == null)
+            return;
+
+        //MainManager.Instance.Debug1("ARModificationManager: selectableY" + currentSelectable.transform.position.y);
+        //MainManager.Instance.Debug1("ARModificationManager: yBoundary:" + yBoundary);
+
+        if (currentSelectable.transform.position.y != yBoundary)
+        {
+            currentSelectable.transform.position = new Vector3(currentSelectable.transform.position.x, yBoundary, currentSelectable.transform.position.z);
+        }
+
         //if (Input.GetTouch(0).tapCount > 0)
         //{
         //    RaycastHit hitInfo = new RaycastHit();
