@@ -59,19 +59,33 @@ public class ARModificationManager : MonoBehaviour
         currentSelectable = leanSelectable.gameObject;
         currentSelectable.GetComponent<Outline>().enabled = true;
 
-        objectListPanel.SetActive(true);
-        objectListHandler.CreateObjectList(currentSelectable);
-
         yBoundary = currentSelectable.transform.position.y;
+
+        if (currentSelectable.CompareTag("Toilet") || currentSelectable.CompareTag("Shower"))
+        {
+            // Do nothing
+        }
+        else
+        {
+            objectListPanel.SetActive(true);
+            objectListHandler.CreateObjectList(currentSelectable);
+        }
     }
 
     public void DeselectARObject()
     {
+        if (currentSelectable.CompareTag("Toilet") || currentSelectable.CompareTag("Shower"))
+        {
+            // Do nothing
+        }
+        else
+        {
+            objectListPanel.SetActive(false);
+            objectListHandler.EmptyObjectList();
+        }
+
         currentSelectable.GetComponent<Outline>().enabled = false;
         currentSelectable = null;
-
-        objectListPanel.SetActive(false);
-        objectListHandler.EmptyObjectList();
     }
 
 

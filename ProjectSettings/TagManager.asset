@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Bed
   - Sofa
-  - Washbin
   - Selectable
   - Cabinet
   - Rack
@@ -19,8 +18,9 @@ TagManager:
   - Kitchen Chair
   - Coffee Table
   - Kitchen Table
-  - Table
   - TV Table
+  - Office Table
+  - Washbasin
   layers:
   - Default
   - TransparentFX

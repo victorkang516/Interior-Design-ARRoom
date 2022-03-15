@@ -12,6 +12,30 @@ public class ObjectListHandler : MonoBehaviour
     public GameObject[] bedPrefabs;
     [SerializeField]
     public GameObject[] sofaPrefabs;
+    [SerializeField]
+    public GameObject[] rackPrefabs;
+    [SerializeField]
+    public GameObject[] cabinetPrefabs;
+    [SerializeField]
+    public GameObject[] tvTablePrefabs;
+    [SerializeField]
+    public GameObject[] coffeeTablePrefabs;
+    [SerializeField]
+    public GameObject[] lampPrefabs;
+    [SerializeField]
+    public GameObject[] officeTablePrefabs;
+    [SerializeField]
+    public GameObject[] chairPrefabs;
+    [SerializeField]
+    public GameObject[] kitchenChairPrefabs;
+    [SerializeField]
+    public GameObject[] kitchenTablePrefabs;
+    [SerializeField]
+    public GameObject[] kitchenShelfPrefabs;
+    [SerializeField]
+    public GameObject[] modularKitchenTablePrefabs;
+    [SerializeField]
+    public GameObject[] washbasinPrefabs;
     #endregion
 
     #region UI Prefab
@@ -35,6 +59,42 @@ public class ObjectListHandler : MonoBehaviour
                 break;
             case "Sofa":
                 BindData(sofaPrefabs);
+                break;
+            case "Rack":
+                BindData(rackPrefabs);
+                break;
+            case "Cabinet":
+                BindData(cabinetPrefabs);
+                break;
+            case "TV Table":
+                BindData(tvTablePrefabs);
+                break;
+            case "Coffee Table":
+                BindData(coffeeTablePrefabs);
+                break;
+            case "Lamp":
+                BindData(lampPrefabs);
+                break;
+            case "Office Table":
+                BindData(officeTablePrefabs);
+                break;
+            case "Chair":
+                BindData(chairPrefabs);
+                break;
+            case "Kitchen Chair":
+                BindData(kitchenChairPrefabs);
+                break;
+            case "Kitchen Table":
+                BindData(kitchenTablePrefabs);
+                break;
+            case "Kitchen Shelf":
+                BindData(kitchenShelfPrefabs);
+                break;
+            case "Modular Kitchen Table":
+                BindData(modularKitchenTablePrefabs);
+                break;
+            case "Washbasin":
+                BindData(washbasinPrefabs);
                 break;
         }
         
