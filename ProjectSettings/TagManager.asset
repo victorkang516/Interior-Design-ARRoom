@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Bed
   - Sofa
-  - Selectable
   - Cabinet
   - Rack
   - Toilet
@@ -21,6 +20,8 @@ TagManager:
   - TV Table
   - Office Table
   - Washbasin
+  - Paint
+  - Floor
   layers:
   - Default
   - TransparentFX

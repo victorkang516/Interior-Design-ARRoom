@@ -16,8 +16,6 @@ public class ARModificationManager : MonoBehaviour
 
     GameObject currentSelectable;
 
-    public Material paintMaterial01;
-
     float yBoundary;
 
     void Start()
@@ -29,6 +27,22 @@ public class ARModificationManager : MonoBehaviour
         lowerWallButton = GameObject.Find("/Canvas/ARModificationMode/HideWallButton").gameObject.GetComponent<Button>();
         lowerWallButton.onClick.AddListener(HideTheWall);
         lowerWallButton.gameObject.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (currentSelectable == null)
+            return;
+
+        FixObjectYPosition();
+    }
+
+    private void FixObjectYPosition()
+    {
+        if (currentSelectable.transform.position.y != yBoundary)
+        {
+            currentSelectable.transform.position = new Vector3(currentSelectable.transform.position.x, yBoundary, currentSelectable.transform.position.z);
+        }
     }
 
     public void RestartUIFlow ()
@@ -57,84 +71,48 @@ public class ARModificationManager : MonoBehaviour
     public void SelectARObject (Lean.Common.LeanSelectable leanSelectable)
     {
         currentSelectable = leanSelectable.gameObject;
-        currentSelectable.GetComponent<Outline>().enabled = true;
-
         yBoundary = currentSelectable.transform.position.y;
 
-        if (currentSelectable.CompareTag("Toilet") || currentSelectable.CompareTag("Shower"))
-        {
-            // Do nothing
-        }
-        else
-        {
-            objectListPanel.SetActive(true);
-            objectListHandler.CreateObjectList(currentSelectable);
-        }
+        TriggerOutline(true);
+        ShowObjectListPanel(true);
     }
 
     public void DeselectARObject()
     {
-        if (currentSelectable.CompareTag("Toilet") || currentSelectable.CompareTag("Shower"))
-        {
-            // Do nothing
-        }
-        else
-        {
-            objectListPanel.SetActive(false);
-            objectListHandler.EmptyObjectList();
-        }
-
-        currentSelectable.GetComponent<Outline>().enabled = false;
+        ShowObjectListPanel(false);
+        TriggerOutline(false);
+        
         currentSelectable = null;
     }
 
-
-
-    private void Update()
+    private void TriggerOutline (bool isEnabled)
     {
-        if (currentSelectable == null)
-            return;
-
-        //MainManager.Instance.Debug1("ARModificationManager: selectableY" + currentSelectable.transform.position.y);
-        //MainManager.Instance.Debug1("ARModificationManager: yBoundary:" + yBoundary);
-
-        if (currentSelectable.transform.position.y != yBoundary)
+        if (currentSelectable.CompareTag("Paint") || currentSelectable.CompareTag("Floor"))
         {
-            currentSelectable.transform.position = new Vector3(currentSelectable.transform.position.x, yBoundary, currentSelectable.transform.position.z);
+            GameObject room = currentSelectable.transform.parent.gameObject;
+            Outline[] childrenOutline = room.GetComponentsInChildren<Outline>();
+            foreach (Outline outline in childrenOutline)
+            {
+                outline.enabled = isEnabled;
+            }
+        }
+        else
+        {
+            currentSelectable.GetComponent<Outline>().enabled = isEnabled;
+        }
+    }
+
+    private void ShowObjectListPanel (bool isEnabled)
+    {
+        if (!currentSelectable.CompareTag("Toilet") && !currentSelectable.CompareTag("Shower"))
+        {
+            objectListPanel.SetActive(isEnabled);
+            if (isEnabled)
+                objectListHandler.CreateObjectList(currentSelectable);
+            else
+                objectListHandler.EmptyObjectList();
         }
 
-        //if (Input.GetTouch(0).tapCount > 0)
-        //{
-        //    RaycastHit hitInfo = new RaycastHit();
-        //    bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.GetTouch(0).position), out hitInfo);
-        //    if (hit)
-        //    {
-        //        debug2.text = Time.deltaTime + ": Hit " + hitInfo.transform.gameObject.name;
-        //        //Debug.Log("Hit " + hitInfo.transform.gameObject.name);
-        //        if (hitInfo.transform.gameObject.tag == "Selectable")
-        //        {
-        //            if (hideWall == false)
-        //            {
-        //                WallPaint[] wallpaintList = hitInfo.transform.GetComponentsInChildren<WallPaint>();
-        //                foreach (WallPaint wallPaint in wallpaintList)
-        //                {
-        //                    wallPaint.GetComponent<Renderer>().material = paintMaterial01;
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            debug2.text = Time.deltaTime + "nopz";
-        //            Debug.Log("nopz");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        debug2.text = Time.deltaTime + "No hit";
-        //        Debug.Log("No hit");
-        //    }
-        //    debug2.text = Time.deltaTime + "Touch is down";
-        //    Debug.Log("Mouse is down");
-        //}
+        return;
     }
 }

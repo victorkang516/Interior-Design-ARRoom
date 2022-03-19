@@ -659,6 +659,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 616886883106692284, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
+      propertyPath: tileX
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 616886883106692284, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
+      propertyPath: tileY
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6946006516134407196, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
       propertyPath: m_Name
       value: Studio

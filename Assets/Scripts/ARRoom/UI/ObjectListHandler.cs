@@ -7,7 +7,10 @@ using UnityEngine.UI;
 
 public class ObjectListHandler : MonoBehaviour
 {
+
+
     #region Furniture Prefabs
+
     [SerializeField]
     public GameObject[] bedPrefabs;
     [SerializeField]
@@ -36,7 +39,23 @@ public class ObjectListHandler : MonoBehaviour
     public GameObject[] modularKitchenTablePrefabs;
     [SerializeField]
     public GameObject[] washbasinPrefabs;
+
     #endregion
+
+
+    #region Paint Materials
+
+    public GameObject[] paintMaterials;
+
+    #endregion
+
+
+    #region Floor Materials
+
+    public GameObject[] floorMaterials;
+
+    #endregion
+
 
     #region UI Prefab
     [SerializeField]
@@ -96,6 +115,12 @@ public class ObjectListHandler : MonoBehaviour
             case "Washbasin":
                 BindData(washbasinPrefabs);
                 break;
+            case "Paint":
+                BindData(paintMaterials);
+                break;
+            case "Floor":
+                BindData(floorMaterials);
+                break;
         }
         
     }
@@ -116,13 +141,46 @@ public class ObjectListHandler : MonoBehaviour
 
     private void OnItemClicked (GameObject prefab)
     {
-        ReplaceObjectWith(prefab);
+        if (selectedObject.CompareTag("Paint"))
+        {
+            ReplacePaintWith(prefab.GetComponent<Renderer>().material);
+        }
+        else if (selectedObject.CompareTag("Floor"))
+        {
+            ReplaceFloorWith(prefab.GetComponent<Renderer>().material);
+        }
+        else
+        {
+            ReplaceObjectWith(prefab);
+        }
     }
 
-    private void ReplaceObjectWith (GameObject prefab)
+    private void ReplaceObjectWith(GameObject prefab)
     {
         Instantiate(prefab, selectedObject.transform.position, selectedObject.transform.rotation, selectedObject.transform.parent);
         Destroy(selectedObject);
+    }
+
+    private void ReplacePaintWith (Material material)
+    {
+        GameObject room = selectedObject.transform.parent.gameObject;
+        foreach (Transform wall in room.transform)
+        {
+            WallPaint[] wallPaints = wall.GetComponentsInChildren<WallPaint>();
+            foreach (WallPaint wallPaint in wallPaints)
+            {
+                wallPaint.GetComponent<Renderer>().material = material;
+            }
+        }
+    }
+
+    private void ReplaceFloorWith(Material material)
+    {
+        GameObject room = selectedObject.transform.parent.gameObject;
+        foreach (Transform floor in room.transform)
+        {
+            floor.GetComponent<Renderer>().material = material;
+        }
     }
 
     public void EmptyObjectList()
