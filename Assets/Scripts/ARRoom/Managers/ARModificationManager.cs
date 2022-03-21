@@ -8,10 +8,13 @@ public class ARModificationManager : MonoBehaviour
     ObjectListHandler objectListHandler;
     GameObject objectListPanel;
 
-    GameObject wallTriggerPanel;
     Button fullWallButton;
     Button halfWallButton;
+    Button closeModificationGuidePanelButton;
     Image triggerWallButtonBg;
+    Image moveGuidePanel;
+    Image pinchGuidePanel;
+    Image modificationGuidePanel;
     bool isFullWall = true;
 
     [HideInInspector] public UpperWall[] upperWallList;
@@ -25,15 +28,25 @@ public class ARModificationManager : MonoBehaviour
     {
         objectListHandler = GameObject.Find("/Canvas/ARModificationMode/ObjectListPanel/Scroll/Panel").GetComponent<ObjectListHandler>();
         objectListPanel = GameObject.Find("/Canvas/ARModificationMode/ObjectListPanel");
-        objectListPanel.SetActive(false);
+        objectListPanel.transform.localScale = new Vector3(0, 1, 0);
 
-        wallTriggerPanel = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel").gameObject.GetComponent<GameObject>();
+        moveGuidePanel = GameObject.Find("/Canvas/ARModificationMode/MoveGuidePanel").gameObject.GetComponent<Image>();
+        moveGuidePanel.gameObject.transform.localScale = Vector2.zero;
+
+        pinchGuidePanel = GameObject.Find("/Canvas/ARModificationMode/PinchGuidePanel").gameObject.GetComponent<Image>();
+        pinchGuidePanel.gameObject.transform.localScale = Vector2.zero;
 
         fullWallButton = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel/FullWallButton").gameObject.GetComponent<Button>();
         fullWallButton.onClick.AddListener(TriggerFullWall);
 
         halfWallButton = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel/HalfWallButton").gameObject.GetComponent<Button>();
         halfWallButton.onClick.AddListener(TriggerHalfWall);
+
+        modificationGuidePanel = GameObject.Find("/Canvas/ARModificationMode/ModificationGuidePanel").gameObject.GetComponent<Image>();
+        modificationGuidePanel.gameObject.transform.localScale = Vector2.zero;
+
+        closeModificationGuidePanelButton = GameObject.Find("/Canvas/ARModificationMode/ModificationGuidePanel/CloseButton").gameObject.GetComponent<Button>();
+        closeModificationGuidePanelButton.onClick.AddListener(CloseModificationGuidePanel);
 
         triggerWallButtonBg = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel/ButtonBg").gameObject.GetComponent<Image>();
     }
@@ -56,7 +69,9 @@ public class ARModificationManager : MonoBehaviour
 
     public void RestartUIFlow ()
     {
-        //MainManager.Instance.Debug1("ARModification: Current selectable is " + currentSelectable);
+        moveGuidePanel.gameObject.transform.localScale = Vector2.zero;
+        pinchGuidePanel.gameObject.transform.localScale = Vector2.zero;
+
         if (currentSelectable != null)
         {
             //MainManager.Instance.Debug2("ARModification: Deselect object");
@@ -104,12 +119,14 @@ public class ARModificationManager : MonoBehaviour
         yBoundary = currentSelectable.transform.position.y;
 
         TriggerOutline(true);
-        ShowObjectListPanel(true);
+        ShowObjectListPanel();
+        ShowGuidePanels();
     }
 
     public void DeselectARObject()
     {
-        ShowObjectListPanel(false);
+        HideGuidePanels();
+        HideObjectListPanel();
         TriggerOutline(false);
         
         currentSelectable = null;
@@ -132,17 +149,44 @@ public class ARModificationManager : MonoBehaviour
         }
     }
 
-    private void ShowObjectListPanel (bool isEnabled)
+    private void ShowObjectListPanel ()
     {
         if (!currentSelectable.CompareTag("Toilet") && !currentSelectable.CompareTag("Shower"))
         {
-            objectListPanel.SetActive(isEnabled);
-            if (isEnabled)
-                objectListHandler.CreateObjectList(currentSelectable);
-            else
-                objectListHandler.EmptyObjectList();
+            LeanTween.scale(objectListPanel.gameObject, new Vector2(1, 1), 0.25f).setEaseInOutQuart();
+            objectListHandler.CreateObjectList(currentSelectable);
         }
+    }
 
-        return;
+    private void HideObjectListPanel()
+    {
+        if (!currentSelectable.CompareTag("Toilet") && !currentSelectable.CompareTag("Shower"))
+        {
+            LeanTween.scale(objectListPanel.gameObject, new Vector2(0, 1), 0.25f).setEaseInOutQuart();
+            objectListHandler.EmptyObjectList();
+        }
+    }
+
+    private void ShowGuidePanels ()
+    {
+        if (!currentSelectable.CompareTag("Paint") && !currentSelectable.CompareTag("Floor"))
+        {
+            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.5f).setEaseOutBack();
+            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(1, 1), 0.5f).setEaseOutBack();
+        }
+    }
+
+    private void HideGuidePanels()
+    {
+        if (!currentSelectable.CompareTag("Paint") && !currentSelectable.CompareTag("Floor"))
+        {
+            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(0, 0), 0.5f).setEaseInBack();
+            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(0, 0), 0.5f).setEaseInBack();
+        }
+    }
+
+    private void CloseModificationGuidePanel()
+    {
+        LeanTween.scale(modificationGuidePanel.gameObject, new Vector2(0, 0), 0.1f);
     }
 }
