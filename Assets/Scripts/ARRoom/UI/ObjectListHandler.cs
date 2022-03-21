@@ -67,7 +67,6 @@ public class ObjectListHandler : MonoBehaviour
 
     public void CreateObjectList (GameObject selectedObject)
     {
-        MainManager.Instance.Debug2("Selection Generator - Display selections ");
 
         this.selectedObject = selectedObject;
 
@@ -127,7 +126,6 @@ public class ObjectListHandler : MonoBehaviour
 
     private void BindData (GameObject[] prefabs)
     {
-        MainManager.Instance.Debug2("Selection Generator - Prefab: " + prefabs.Length);
 
         for (int i = 0; i < prefabs.Length; i++)
         {

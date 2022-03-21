@@ -44,11 +44,11 @@ public class ARPlacementManager : MonoBehaviour
         aRManager = transform.GetComponentInParent<ARManager>();
 
         movePhoneImage = GameObject.Find("/Canvas/ARPlacementMode/MovePhoneImage").gameObject.GetComponent<Image>();
-        confirmButton = GameObject.Find("/Canvas/ARPlacementMode/ConfirmButton").gameObject.GetComponent<Button>();
-
         movePhoneImage.gameObject.SetActive(true);
-        confirmButton.gameObject.SetActive(false);
+        LeanTween.moveLocalX(movePhoneImage.gameObject, -100.0f, 1.0f).setEaseInOutSine().setLoopPingPong();
 
+        confirmButton = GameObject.Find("/Canvas/ARPlacementMode/ConfirmButton").gameObject.GetComponent<Button>();
+        confirmButton.gameObject.SetActive(false);
         confirmButton.onClick.AddListener(ChangeToARModificationMode);
     }
 

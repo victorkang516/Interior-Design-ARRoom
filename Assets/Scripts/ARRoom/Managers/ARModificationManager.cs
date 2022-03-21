@@ -8,8 +8,11 @@ public class ARModificationManager : MonoBehaviour
     ObjectListHandler objectListHandler;
     GameObject objectListPanel;
 
-    Button lowerWallButton;
-    bool hideWall = false;
+    GameObject wallTriggerPanel;
+    Button fullWallButton;
+    Button halfWallButton;
+    Image triggerWallButtonBg;
+    bool isFullWall = true;
 
     [HideInInspector] public UpperWall[] upperWallList;
     [HideInInspector] public MiddleWall[] middleWallList;
@@ -24,9 +27,15 @@ public class ARModificationManager : MonoBehaviour
         objectListPanel = GameObject.Find("/Canvas/ARModificationMode/ObjectListPanel");
         objectListPanel.SetActive(false);
 
-        lowerWallButton = GameObject.Find("/Canvas/ARModificationMode/HideWallButton").gameObject.GetComponent<Button>();
-        lowerWallButton.onClick.AddListener(HideTheWall);
-        lowerWallButton.gameObject.SetActive(true);
+        wallTriggerPanel = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel").gameObject.GetComponent<GameObject>();
+
+        fullWallButton = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel/FullWallButton").gameObject.GetComponent<Button>();
+        fullWallButton.onClick.AddListener(TriggerFullWall);
+
+        halfWallButton = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel/HalfWallButton").gameObject.GetComponent<Button>();
+        halfWallButton.onClick.AddListener(TriggerHalfWall);
+
+        triggerWallButtonBg = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel/ButtonBg").gameObject.GetComponent<Image>();
     }
 
     private void Update()
@@ -47,25 +56,46 @@ public class ARModificationManager : MonoBehaviour
 
     public void RestartUIFlow ()
     {
-        lowerWallButton.gameObject.SetActive(true);
+        //MainManager.Instance.Debug1("ARModification: Current selectable is " + currentSelectable);
         if (currentSelectable != null)
+        {
+            //MainManager.Instance.Debug2("ARModification: Deselect object");
             DeselectARObject();
+        }
+            
     }
 
-    private void HideTheWall()
+    private void TriggerFullWall()
     {
-        
-        hideWall = !hideWall;
+        isFullWall = true;
+        SearchAndTriggerAllWalls(isFullWall);
 
+        LeanTween.moveLocalY(triggerWallButtonBg.gameObject, 50.0f, 0.25f).setEaseInOutQuart();
+    }
+
+    private void TriggerHalfWall()
+    {
+        isFullWall = false;
+        SearchAndTriggerAllWalls(isFullWall);
+
+        LeanTween.moveLocalY(triggerWallButtonBg.gameObject, -50.0f, 0.25f).setEaseInOutQuart();
+    }
+
+    private void SearchAndTriggerAllWalls (bool isFullWall)
+    {
         foreach (UpperWall upperWall in upperWallList)
         {
-            upperWall.gameObject.SetActive(!hideWall);
+            upperWall.gameObject.SetActive(isFullWall);
+            Lean.Touch.LeanSelectableByFinger parentWall = upperWall.GetComponent<Lean.Touch.LeanSelectableByFinger>();
+            if (parentWall != null)
+                parentWall.enabled = isFullWall;
         }
 
         foreach (MiddleWall middleWall in middleWallList)
         {
-            middleWall.gameObject.SetActive(!hideWall);
+            middleWall.gameObject.SetActive(isFullWall);
         }
+
     }
 
     public void SelectARObject (Lean.Common.LeanSelectable leanSelectable)
