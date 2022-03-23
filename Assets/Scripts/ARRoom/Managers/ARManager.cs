@@ -13,6 +13,7 @@ public class ARManager : MonoBehaviour
     GameObject aRModel;
 
     Button resetButton;
+    GameObject floorTriggerPanel;
 
     [SerializeField] GameObject aRModelPrefab;
 
@@ -27,33 +28,60 @@ public class ARManager : MonoBehaviour
 
         resetButton = GameObject.Find("/Canvas/ARBasicMode/ResetButton").GetComponent<Button>();
         resetButton.onClick.AddListener(ResetARSession);
+
+        floorTriggerPanel = GameObject.Find("/Canvas/ARModificationMode/FloorTriggerPanel");
     }
 
     private void Update()
     {
         if (firstCount == 0 && aRModificationManager.gameObject.activeInHierarchy && aRPlacementManager.gameObject.activeInHierarchy)
         {
+            InitializeUI();
             InitializeManagers();
             InitializeARModel();
             firstCount++;
         }
     }
 
-    private void ResetARSession ()
+    private void InitializeUI()
     {
-        aRSession.Reset();
-        aRModel.GetComponent<Lean.Touch.LeanPinchScale>().enabled = true;
-        aRModel.GetComponent<Lean.Touch.LeanTwistRotateAxis>().enabled = true;
-        aRModel.SetActive(false);
-        ResetAllMode();
+
+        if (MainManager.Instance.modelType == ModelType.Studio)
+        {
+            floorTriggerPanel.SetActive(false);
+        }
+        else if (MainManager.Instance.modelType == ModelType.Loft)
+        {
+            
+        }
     }
 
-    private void ResetAllMode ()
+    private void InitializeManagers()
     {
-        aRPlacementManager.RestartUIFlow();
-        aRModificationManager.RestartUIFlow();
         SetActiveARPlacementMode(true);
         SetActiveARModificationMode(false);
+    }
+
+    private void InitializeARModel()
+    {
+        // TODO Check which condotype selected
+
+        aRModel = Instantiate(aRModelPrefab, new Vector3(0, 0, 0), aRModelPrefab.transform.rotation);
+        aRPlacementManager.aRModel = aRModel;
+
+        if (MainManager.Instance.modelType == ModelType.Loft)
+        {
+            aRModificationManager.firstFloor = aRModel.transform.Find("FirstFloor").gameObject;
+        }
+        else
+        {
+            
+        }
+
+        aRModificationManager.middleWallList = FindObjectsOfType<MiddleWall>();
+        aRModificationManager.upperWallList = FindObjectsOfType<UpperWall>();
+
+        aRModel.SetActive(false);
     }
 
     public void SetActiveARPlacementMode (bool isActive)
@@ -66,21 +94,22 @@ public class ARManager : MonoBehaviour
         aRModificationManager.gameObject.SetActive(isActive);
     }
 
-    private void InitializeManagers ()
+
+    private void ResetARSession()
     {
+        aRSession.Reset();
+        aRModel.GetComponent<Lean.Touch.LeanPinchScale>().enabled = true;
+        aRModel.GetComponent<Lean.Touch.LeanTwistRotateAxis>().enabled = true;
+        aRModel.SetActive(false);
+        ResetAllMode();
+    }
+
+    private void ResetAllMode()
+    {
+        aRPlacementManager.RestartUIFlow();
+        aRModificationManager.RestartUIFlow();
         SetActiveARPlacementMode(true);
         SetActiveARModificationMode(false);
     }
 
-    private void InitializeARModel()
-    {
-        // TODO Check which condotype selected
-        aRModel = Instantiate(aRModelPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-
-        aRPlacementManager.aRModel = aRModel;
-        aRModificationManager.middleWallList = FindObjectsOfType<MiddleWall>();
-        aRModificationManager.upperWallList = FindObjectsOfType<UpperWall>();
-
-        aRModel.SetActive(false);
-    }
 }

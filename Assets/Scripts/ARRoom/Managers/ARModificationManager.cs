@@ -5,13 +5,21 @@ using UnityEngine.UI;
 
 public class ARModificationManager : MonoBehaviour
 {
+    [HideInInspector] public GameObject firstFloor;
+
     ObjectListHandler objectListHandler;
     GameObject objectListPanel;
 
+    Button firstFloorButton;
+    Button groundFloorButton;
     Button fullWallButton;
     Button halfWallButton;
-    Button closeModificationGuidePanelButton;
+
     Image triggerWallButtonBg;
+    Image triggerFloorButtonBg;
+
+    Button closeModificationGuidePanelButton;
+    
     Image moveGuidePanel;
     Image pinchGuidePanel;
     Image modificationGuidePanel;
@@ -20,12 +28,14 @@ public class ARModificationManager : MonoBehaviour
     [HideInInspector] public UpperWall[] upperWallList;
     [HideInInspector] public MiddleWall[] middleWallList;
 
+
     GameObject currentSelectable;
 
     float yBoundary;
 
     void Start()
     {
+
         objectListHandler = GameObject.Find("/Canvas/ARModificationMode/ObjectListPanel/Scroll/Panel").GetComponent<ObjectListHandler>();
         objectListPanel = GameObject.Find("/Canvas/ARModificationMode/ObjectListPanel");
         objectListPanel.transform.localScale = new Vector3(0, 1, 0);
@@ -35,6 +45,12 @@ public class ARModificationManager : MonoBehaviour
 
         pinchGuidePanel = GameObject.Find("/Canvas/ARModificationMode/PinchGuidePanel").gameObject.GetComponent<Image>();
         pinchGuidePanel.gameObject.transform.localScale = Vector2.zero;
+
+        firstFloorButton = GameObject.Find("/Canvas/ARModificationMode/FloorTriggerPanel/FirstFloorButton").gameObject.GetComponent<Button>();
+        firstFloorButton.onClick.AddListener(ViewFirstFloor);
+
+        groundFloorButton = GameObject.Find("/Canvas/ARModificationMode/FloorTriggerPanel/GroundFloorButton").gameObject.GetComponent<Button>();
+        groundFloorButton.onClick.AddListener(ViewGroundFloor);
 
         fullWallButton = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel/FullWallButton").gameObject.GetComponent<Button>();
         fullWallButton.onClick.AddListener(TriggerFullWall);
@@ -49,6 +65,8 @@ public class ARModificationManager : MonoBehaviour
         closeModificationGuidePanelButton.onClick.AddListener(CloseModificationGuidePanel);
 
         triggerWallButtonBg = GameObject.Find("/Canvas/ARModificationMode/WallTriggerPanel/ButtonBg").gameObject.GetComponent<Image>();
+        triggerFloorButtonBg = GameObject.Find("/Canvas/ARModificationMode/FloorTriggerPanel/ButtonBg").gameObject.GetComponent<Image>();
+
     }
 
     private void Update()
@@ -100,17 +118,83 @@ public class ARModificationManager : MonoBehaviour
     {
         foreach (UpperWall upperWall in upperWallList)
         {
-            upperWall.gameObject.SetActive(isFullWall);
-            Lean.Touch.LeanSelectableByFinger parentWall = upperWall.GetComponent<Lean.Touch.LeanSelectableByFinger>();
-            if (parentWall != null)
-                parentWall.enabled = isFullWall;
+            
+            if (firstFloor != null)
+            {
+                if (firstFloor.activeInHierarchy)
+                {
+                    if (upperWall.onFloor == FloorType.FirstFloor)
+                    {
+                        upperWall.gameObject.SetActive(isFullWall);
+                        Lean.Touch.LeanSelectableByFinger parentPaintLeanSelectable = upperWall.transform.parent.GetComponent<Lean.Touch.LeanSelectableByFinger>();
+                        if (parentPaintLeanSelectable != null)
+                            parentPaintLeanSelectable.enabled = isFullWall;
+                    }
+
+                }
+                else
+                {
+                    if (upperWall.onFloor == FloorType.GroundFloor)
+                    {
+                        upperWall.gameObject.SetActive(isFullWall);
+                        Lean.Touch.LeanSelectableByFinger parentPaintLeanSelectable = upperWall.transform.parent.GetComponent<Lean.Touch.LeanSelectableByFinger>();
+                        if (parentPaintLeanSelectable != null)
+                            parentPaintLeanSelectable.enabled = isFullWall;
+                    }
+                }
+            }
+            else
+            {
+                upperWall.gameObject.SetActive(isFullWall);
+                Lean.Touch.LeanSelectableByFinger parentPaintLeanSelectable = upperWall.transform.parent.GetComponent<Lean.Touch.LeanSelectableByFinger>();
+                if (parentPaintLeanSelectable != null)
+                    parentPaintLeanSelectable.enabled = isFullWall;
+            }
         }
 
         foreach (MiddleWall middleWall in middleWallList)
         {
-            middleWall.gameObject.SetActive(isFullWall);
+            if (firstFloor != null)
+            {
+                if (firstFloor.activeInHierarchy)
+                {
+                    if (middleWall.onFloor == FloorType.FirstFloor)
+                    {
+                        middleWall.gameObject.SetActive(isFullWall);
+                    }
+                }
+                else
+                {
+                    if (middleWall.onFloor == FloorType.GroundFloor)
+                    {
+                        middleWall.gameObject.SetActive(isFullWall);
+                    }
+                }
+            }
+            else
+            {
+                middleWall.gameObject.SetActive(isFullWall);
+            }
         }
 
+    }
+
+    private void ViewFirstFloor()
+    {
+        SearchAndTriggerAllWalls(true);
+
+        firstFloor.SetActive(true);
+        LeanTween.moveLocalY(triggerFloorButtonBg.gameObject, 50.0f, 0.25f).setEaseInOutQuart();
+
+        SearchAndTriggerAllWalls(isFullWall);
+    }
+
+    private void ViewGroundFloor()
+    {
+        firstFloor.SetActive(false);
+        LeanTween.moveLocalY(triggerFloorButtonBg.gameObject, -50.0f, 0.25f).setEaseInOutQuart();
+
+        SearchAndTriggerAllWalls(isFullWall);
     }
 
     public void SelectARObject (Lean.Common.LeanSelectable leanSelectable)
@@ -171,8 +255,8 @@ public class ARModificationManager : MonoBehaviour
     {
         if (!currentSelectable.CompareTag("Paint") && !currentSelectable.CompareTag("Floor"))
         {
-            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.5f).setEaseOutBack();
-            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(1, 1), 0.5f).setEaseOutBack();
+            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.25f).setEaseOutBack();
+            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(1, 1), 0.25f).setEaseOutBack();
         }
     }
 
@@ -180,8 +264,8 @@ public class ARModificationManager : MonoBehaviour
     {
         if (!currentSelectable.CompareTag("Paint") && !currentSelectable.CompareTag("Floor"))
         {
-            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(0, 0), 0.5f).setEaseInBack();
-            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(0, 0), 0.5f).setEaseInBack();
+            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(0, 0), 0.25f).setEaseInBack();
+            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(0, 0), 0.25f).setEaseInBack();
         }
     }
 

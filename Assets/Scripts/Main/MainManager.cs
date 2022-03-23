@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum ModelType
+{
+    Studio,
+    Loft
+}
+
 public class MainManager : MonoBehaviour
 {
     public static MainManager Instance { get; private set; }
@@ -17,11 +23,13 @@ public class MainManager : MonoBehaviour
         else
         {
             Instance = this;
+            modelType = ModelType.Loft;
         }
     }
 
     public Text debug1;
     public Text debug2;
+    public ModelType modelType;
 
     public void Debug1 (string msg)
     {

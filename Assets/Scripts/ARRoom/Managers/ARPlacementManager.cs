@@ -165,6 +165,20 @@ public class ARPlacementManager : MonoBehaviour
 
     private void MoveObject()
     {
+        //if (raycastManager.Raycast(Camera.current.ViewportPointToRay(viewportCenter), hits))
+        //{
+            //aRModel.SetActive(true);
+            //aRModel.transform.position = hits[0].pose.position;
+
+            //aRModelInitialPosition = aRModel.transform.position;
+            //aRModelInitialScale = aRModel.transform.localScale;
+
+            //movePhoneImage.gameObject.SetActive(false);
+            //LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.5f).setEaseOutBack().setDelay(1.0f);
+            //confirmButton.gameObject.SetActive(true);
+        //}
+
+        
         if (IsPointerOverUIObject())
             return;
 
@@ -175,7 +189,7 @@ public class ARPlacementManager : MonoBehaviour
 
                 if (Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    aRModel.transform.position = hits[0].pose.position;
+                    //aRModel.transform.position = hits[0].pose.position;
                 }
                 else if (Input.GetTouch(0).phase == TouchPhase.Moved && aRModel != null)
                 {
@@ -183,10 +197,11 @@ public class ARPlacementManager : MonoBehaviour
                 }
                 if (Input.GetTouch(0).phase == TouchPhase.Ended)
                 {
-                    //empty
+                    aRModel.transform.position = hits[0].pose.position;
                 }
             }
         }
+        
     }
 
     private void CloseConfirmGuidePanel ()
