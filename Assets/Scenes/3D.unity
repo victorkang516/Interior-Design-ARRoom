@@ -550,13 +550,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491141059}
-  m_LocalRotation: {x: 0.35355338, y: 0.35355338, z: -0.1464466, w: 0.8535535}
-  m_LocalPosition: {x: -1, y: 2.5, z: -1}
+  m_LocalRotation: {x: 0.0038510861, y: 0.5987899, z: -0.0028813991, w: 0.8008917}
+  m_LocalPosition: {x: 0.010290087, y: 1.0761629, z: -0.8612089}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.177, y: 55, z: 0}
 --- !u!1 &1716134294
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,6 +716,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1329683570119329942, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 135082a51b312ed429b9641a1de20d2c, type: 2}
+    - target: {fileID: 3246459799001341823, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.624
+      objectReference: {fileID: 0}
+    - target: {fileID: 3411688129808209589, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 135082a51b312ed429b9641a1de20d2c, type: 2}
+    - target: {fileID: 3665080779374404536, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 135082a51b312ed429b9641a1de20d2c, type: 2}
+    - target: {fileID: 4708918720764677736, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5531d92ee6fe67b44b21787aea612c60, type: 2}
     - target: {fileID: 6946006516134407196, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
       propertyPath: m_Name
       value: Studio
