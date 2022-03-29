@@ -1357,10 +1357,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6946006516134407197}
+  - component: {fileID: -7099056667549207174}
   - component: {fileID: 9210443413110754389}
   - component: {fileID: 4038714978425107131}
   m_Layer: 0
-  m_Name: Loft
+  m_Name: LoftApartment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1383,6 +1384,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 160, z: 0}
+--- !u!114 &-7099056667549207174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946006516134407196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37b7caab6154faf42b5597e56f3e7b2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelType: 1
+  ModelName: Loft Apartment
+  Thumbnail: {fileID: 21300000, guid: e275238309d021347aed440ccc2938e7, type: 3}
+  ModelDescription: A loft apartment refers to large adaptable open space, often
+    converted for residential use from some other use, often light industrial.
 --- !u!114 &9210443413110754389
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,14 +14,15 @@ public class CreateARRoomUIHandler : MonoBehaviour
     {
         canvasManager = gameObject.GetComponentInParent<CanvasManager>();
 
-        newARRoomButton = gameObject.GetComponentsInChildren<Button>()[0];
+        newARRoomButton = transform.Find("NewARRoomButton").GetComponent<Button>();
         newARRoomButton.onClick.AddListener(GoToCreateARRoomPage);
 
-        loadARRoomButton = gameObject.GetComponentsInChildren<Button>()[1];
+        loadARRoomButton = transform.Find("LoadARRoomButton").GetComponent<Button>();
         loadARRoomButton.onClick.AddListener(GoToJoinARRoomPage);
 
-        backButton = gameObject.GetComponentsInChildren<Button>()[2];
+        backButton = transform.Find("BackButton").GetComponent<Button>();
         backButton.onClick.AddListener(BackToMainMenu);
+
     }
 
     void GoToCreateARRoomPage()

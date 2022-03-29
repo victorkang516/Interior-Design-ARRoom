@@ -15,8 +15,6 @@ public class ARManager : MonoBehaviour
     Button resetButton;
     GameObject floorTriggerPanel;
 
-    [SerializeField] GameObject aRModelPrefab;
-
     int firstCount = 0;
 
     void Start()
@@ -26,7 +24,7 @@ public class ARManager : MonoBehaviour
         aRPlacementManager = transform.Find("ARPlacementMode").gameObject.GetComponent<ARPlacementManager>();
         aRModificationManager = transform.Find("ARModificationMode").gameObject.GetComponent<ARModificationManager>();
 
-        resetButton = GameObject.Find("/Canvas/ARBasicMode/ResetButton").GetComponent<Button>();
+        resetButton = GameObject.Find("/Canvas/ARBasicMode/TopLeftPanel/ResetButton").GetComponent<Button>();
         resetButton.onClick.AddListener(ResetARSession);
 
         floorTriggerPanel = GameObject.Find("/Canvas/ARModificationMode/FloorTriggerPanel");
@@ -46,13 +44,13 @@ public class ARManager : MonoBehaviour
     private void InitializeUI()
     {
 
-        if (MainManager.Instance.modelType == ModelType.Studio)
+        if (MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().modelType == ModelType.Studio)
         {
             floorTriggerPanel.SetActive(false);
         }
-        else if (MainManager.Instance.modelType == ModelType.Loft)
+        else if (MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().modelType == ModelType.Loft)
         {
-            
+            floorTriggerPanel.SetActive(true);
         }
     }
 
@@ -64,18 +62,14 @@ public class ARManager : MonoBehaviour
 
     private void InitializeARModel()
     {
-        // TODO Check which condotype selected
-
-        aRModel = Instantiate(aRModelPrefab, new Vector3(0, 0, 0), aRModelPrefab.transform.rotation);
+        
+        aRModel = Instantiate(MainManager.Instance.selectedARModelPrefab, new Vector3(0, 0, 0), MainManager.Instance.selectedARModelPrefab.transform.rotation);
+        
         aRPlacementManager.aRModel = aRModel;
 
-        if (MainManager.Instance.modelType == ModelType.Loft)
+        if (MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().modelType == ModelType.Loft)
         {
             aRModificationManager.firstFloor = aRModel.transform.Find("FirstFloor").gameObject;
-        }
-        else
-        {
-            
         }
 
         aRModificationManager.middleWallList = FindObjectsOfType<MiddleWall>();

@@ -13,10 +13,10 @@ public class MainMenuUIHandler : MonoBehaviour
     {
         canvasManager = gameObject.GetComponentInParent<CanvasManager>();
 
-        createARRoomButton = gameObject.GetComponentsInChildren<Button>()[0];
+        createARRoomButton = transform.Find("CreateARRoomButton").GetComponent<Button>();
         createARRoomButton.onClick.AddListener(GoToCreateARRoomPage);
 
-        joinARRoomButton = gameObject.GetComponentsInChildren<Button>()[1];
+        joinARRoomButton = transform.Find("JoinARRoomButton").GetComponent<Button>();
         joinARRoomButton.onClick.AddListener(GoToJoinARRoomPage);
     }
 
