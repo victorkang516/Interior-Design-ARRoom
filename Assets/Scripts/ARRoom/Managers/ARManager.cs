@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.SceneManagement;
 
 public class ARManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class ARManager : MonoBehaviour
     GameObject aRModel;
 
     Button resetButton;
+    Button exitButton;
+
     GameObject floorTriggerPanel;
 
     int firstCount = 0;
@@ -26,6 +29,9 @@ public class ARManager : MonoBehaviour
 
         resetButton = GameObject.Find("/Canvas/ARBasicMode/TopLeftPanel/ResetButton").GetComponent<Button>();
         resetButton.onClick.AddListener(ResetARSession);
+
+        exitButton = resetButton = GameObject.Find("/Canvas/ARBasicMode/TopLeftPanel/ExitButton").GetComponent<Button>();
+        exitButton.onClick.AddListener(ExitARRoom);
 
         floorTriggerPanel = GameObject.Find("/Canvas/ARModificationMode/FloorTriggerPanel");
     }
@@ -104,6 +110,11 @@ public class ARManager : MonoBehaviour
         aRModificationManager.RestartUIFlow();
         SetActiveARPlacementMode(true);
         SetActiveARModificationMode(false);
+    }
+
+    private void ExitARRoom ()
+    {
+        SceneManager.LoadScene(0);
     }
 
 }

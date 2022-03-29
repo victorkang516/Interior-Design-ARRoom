@@ -649,9 +649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edcc437b703407e4da09c98769f049e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aRModelPrefabs:
-  - {fileID: 6946006516134407196, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
-  - {fileID: 6946006516134407196, guid: 32edb9eb0917394409e07fa48fc417d7, type: 3}
 --- !u!1 &383150241
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,7 +662,7 @@ GameObject:
   - component: {fileID: 383150244}
   - component: {fileID: 383150243}
   m_Layer: 5
-  m_Name: BackButton
+  m_Name: ExitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

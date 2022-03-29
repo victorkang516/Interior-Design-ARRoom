@@ -22,6 +22,6 @@ public class MainManager : MonoBehaviour
     }
 
     [SerializeField] public GameObject[] aRModelPrefabs;
-    public GameObject selectedARModelPrefab;
+    [HideInInspector] public GameObject selectedARModelPrefab;
 
 }
