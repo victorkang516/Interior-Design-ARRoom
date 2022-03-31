@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.ARSubsystems;
 
 public class ARPlacementManager : MonoBehaviour
 {
@@ -26,6 +25,7 @@ public class ARPlacementManager : MonoBehaviour
 
     Vector3 aRModelInitialPosition;
     Vector3 aRModelInitialScale;
+
     #endregion
 
 
@@ -165,19 +165,6 @@ public class ARPlacementManager : MonoBehaviour
 
     private void MoveObject()
     {
-        //if (raycastManager.Raycast(Camera.current.ViewportPointToRay(viewportCenter), hits))
-        //{
-            //aRModel.SetActive(true);
-            //aRModel.transform.position = hits[0].pose.position;
-
-            //aRModelInitialPosition = aRModel.transform.position;
-            //aRModelInitialScale = aRModel.transform.localScale;
-
-            //movePhoneImage.gameObject.SetActive(false);
-            //LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.5f).setEaseOutBack().setDelay(1.0f);
-            //confirmButton.gameObject.SetActive(true);
-        //}
-
         
         if (IsPointerOverUIObject())
             return;

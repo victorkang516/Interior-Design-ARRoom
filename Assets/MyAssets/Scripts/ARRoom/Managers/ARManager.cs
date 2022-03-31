@@ -20,6 +20,8 @@ public class ARManager : MonoBehaviour
 
     int firstCount = 0;
 
+    ARModel selectedARModel;
+
     void Start()
     {
         aRSession = GameObject.Find("/AR Session").GetComponent<ARSession>();
@@ -34,6 +36,8 @@ public class ARManager : MonoBehaviour
         exitButton.onClick.AddListener(ExitARRoom);
 
         floorTriggerPanel = GameObject.Find("/Canvas/ARModificationMode/FloorTriggerPanel");
+
+        selectedARModel = MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>();
     }
 
     private void Update()
@@ -50,11 +54,11 @@ public class ARManager : MonoBehaviour
     private void InitializeUI()
     {
 
-        if (MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().modelType == ModelType.Studio)
+        if (selectedARModel.modelType == ModelType.Studio)
         {
             floorTriggerPanel.SetActive(false);
         }
-        else if (MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().modelType == ModelType.Loft)
+        else if (selectedARModel.modelType == ModelType.Loft)
         {
             floorTriggerPanel.SetActive(true);
         }
@@ -69,11 +73,11 @@ public class ARManager : MonoBehaviour
     private void InitializeARModel()
     {
         
-        aRModel = Instantiate(MainManager.Instance.selectedARModelPrefab, new Vector3(0, 0, 0), MainManager.Instance.selectedARModelPrefab.transform.rotation);
+        aRModel = Instantiate(selectedARModel.gameObject, new Vector3(0, 0, 0), selectedARModel.gameObject.transform.rotation);
         
         aRPlacementManager.aRModel = aRModel;
 
-        if (MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().modelType == ModelType.Loft)
+        if (selectedARModel.modelType == ModelType.Loft)
         {
             aRModificationManager.firstFloor = aRModel.transform.Find("FirstFloor").gameObject;
         }
