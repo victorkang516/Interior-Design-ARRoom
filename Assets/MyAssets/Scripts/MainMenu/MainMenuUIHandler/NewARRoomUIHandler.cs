@@ -2,24 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class NewARRoomUIHandler : MonoBehaviour
 {
     CanvasManager canvasManager;
+    NetworkManager networkManager;
+
     Button backButton;
+
     Button previousButton;
     Button nextButton;
+
+    InputField roomNameInputField;
     Button createButton;
+
     Image modelImage;
     Text modelNameText;
     Text modelDescriptionText;
+
+    GameObject errorMessageBox;
 
     int modelIndex = 0;
 
     private void Start()
     {
         canvasManager = gameObject.GetComponentInParent<CanvasManager>();
+        networkManager = GameObject.Find("/NetworkManager").GetComponent<NetworkManager>();
 
         backButton = transform.Find("BackButton").GetComponent<Button>();
         backButton.onClick.AddListener(BackToCreateARRoom);
@@ -33,8 +41,12 @@ public class NewARRoomUIHandler : MonoBehaviour
         modelNameText = transform.Find("ModelInfoPanel/ModelNameText").GetComponent<Text>();
         modelDescriptionText = transform.Find("ModelInfoPanel/ModelDescriptionText").GetComponent<Text>();
 
+        roomNameInputField = transform.Find("RoomNamePanel/RoomNameInputField").GetComponent<InputField>();
         createButton = transform.Find("RoomNamePanel/CreateNewRoomButton").GetComponent<Button>();
         createButton.onClick.AddListener(CreateARRoom);
+
+        errorMessageBox = transform.Find("ErrorMessageBox").gameObject;
+        errorMessageBox.transform.localScale = new Vector2(0, 1);
 
         BindModelData(0);
     }
@@ -76,11 +88,18 @@ public class NewARRoomUIHandler : MonoBehaviour
 
     void CreateARRoom ()
     {
-        SceneManager.LoadScene(1);
+        if (roomNameInputField.text.Length > 0)
+            networkManager.CreateARRoom(roomNameInputField.text);
+        else
+        {
+            errorMessageBox.transform.localScale = new Vector2(0, 1);
+            LeanTween.scale(errorMessageBox, new Vector2(1, 1), 0.1f).setEaseInSine();
+        }
     }
 
     void BackToCreateARRoom()
     {
+        errorMessageBox.transform.localScale = new Vector2(0, 1);
         canvasManager.SwitchCanvas(CanvasType.CreateARRoom);
     }
 

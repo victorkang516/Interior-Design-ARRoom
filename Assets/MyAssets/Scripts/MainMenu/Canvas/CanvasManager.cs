@@ -4,11 +4,13 @@ using UnityEngine;
 using System.Linq;
 
 public enum CanvasType {
-    MainMenu,
+    Login,
+    Home,
     CreateARRoom,
     NewARRoom,
     LoadARRoom,
-    JoinARRoom
+    JoinARRoom,
+    Loading
 }
 
 public class CanvasManager : MonoBehaviour
@@ -21,7 +23,7 @@ public class CanvasManager : MonoBehaviour
         canvasControllerList = gameObject.GetComponentsInChildren<CanvasController>().ToList();
         canvasControllerList.ForEach( canvasController => canvasController.gameObject.SetActive(false));
 
-        CanvasController mainMenuCanvasController = canvasControllerList.Find(canvasController => canvasController.canvasType == CanvasType.MainMenu);
+        CanvasController mainMenuCanvasController = canvasControllerList.Find(canvasController => canvasController.canvasType == CanvasType.Login);
         if (mainMenuCanvasController != null)
         {
             mainMenuCanvasController.gameObject.SetActive(true);
@@ -41,4 +43,5 @@ public class CanvasManager : MonoBehaviour
         }
         else { Debug.LogWarning("CanvasManager: " + desiredType + " Not Found"); }
     }
+
 }

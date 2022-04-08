@@ -37,6 +37,6 @@ public class CreateARRoomUIHandler : MonoBehaviour
 
     void BackToMainMenu()
     {
-        canvasManager.SwitchCanvas(CanvasType.MainMenu);
+        canvasManager.SwitchCanvas(CanvasType.Home);
     }
 }
