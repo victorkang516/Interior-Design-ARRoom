@@ -21,22 +21,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     string gameVersion = "1";
 
     CanvasManager canvasManager;
-
-    GameObject loginPage;
-    GameObject loadingPage;
-    GameObject mainPage;
-    GameObject joinRoomPage;
-    GameObject createRoomPage;
-
-    Button createRoomButton;
-    Button joinRoomButton;
-    Button createButton;
-    Button joinButton;
-
-    InputField createRoomNameInputField;
-    InputField joinRoomNameInputField;
-
-    MessageHandler messageHandler;
+    ExceptionMessageBoxHandler exceptionMessageBoxHandler;
 
     /// <summary>
     /// Keep track of the current process. Since connection is asynchronous and is based on several callbacks from Photon,
@@ -57,7 +42,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         canvasManager = GameObject.Find("/Canvas").GetComponent<CanvasManager>();
-        messageHandler = GameObject.Find("/Canvas/MessagePage").GetComponent<MessageHandler>();
+        exceptionMessageBoxHandler = GameObject.Find("/Canvas/MessagePage").GetComponent<ExceptionMessageBoxHandler>();
     }
 
     #endregion
@@ -85,13 +70,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         //Debug.Log("PUN Basics Tutorial/Launcher:OnCreateRoomFailed() was called by PUN. The room name you enter has been used by existing room, try another room name");
-        messageHandler.DisplayMessage("The room name has been used, try another room name.");
+        exceptionMessageBoxHandler.DisplayMessage("The room name has been used, try another room name.");
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         //Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No such room existing, check if you have enter a incorrect room name, or your host not yet create the room.");
-        messageHandler.DisplayMessage("Room not found, incorrect room name or the room haven't been create.");
+        exceptionMessageBoxHandler.DisplayMessage("Room not found, incorrect room name or the room haven't been create.");
     }
 
     public override void OnJoinedRoom()
@@ -101,7 +86,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         // #Critical: We only load if we are the first player, else we rely on `PhotonNetwork.AutomaticallySyncScene` to sync our instance scene.
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-            Debug.Log("We load the '3D' ");
+            Debug.Log("We load the 'ARRoomScene' ");
 
             // #Critical
             // Load the Room Level.

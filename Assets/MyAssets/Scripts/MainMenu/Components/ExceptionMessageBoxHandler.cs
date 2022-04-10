@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MessageHandler : MonoBehaviour
+public class ExceptionMessageBoxHandler : MonoBehaviour
 {
     Text messageText;
     Button closeButton;

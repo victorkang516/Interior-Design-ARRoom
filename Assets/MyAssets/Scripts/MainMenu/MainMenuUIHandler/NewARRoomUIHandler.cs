@@ -20,7 +20,7 @@ public class NewARRoomUIHandler : MonoBehaviour
     Text modelNameText;
     Text modelDescriptionText;
 
-    GameObject errorMessageBox;
+    GameObject warningSign;
 
     int modelIndex = 0;
 
@@ -45,8 +45,7 @@ public class NewARRoomUIHandler : MonoBehaviour
         createButton = transform.Find("RoomNamePanel/CreateNewRoomButton").GetComponent<Button>();
         createButton.onClick.AddListener(CreateARRoom);
 
-        errorMessageBox = transform.Find("ErrorMessageBox").gameObject;
-        errorMessageBox.transform.localScale = new Vector2(0, 1);
+        warningSign = transform.Find("WarningSign").gameObject;
 
         BindModelData(0);
     }
@@ -92,14 +91,13 @@ public class NewARRoomUIHandler : MonoBehaviour
             networkManager.CreateARRoom(roomNameInputField.text);
         else
         {
-            errorMessageBox.transform.localScale = new Vector2(0, 1);
-            LeanTween.scale(errorMessageBox, new Vector2(1, 1), 0.1f).setEaseInSine();
+            warningSign.GetComponent<WarningSignHandler>().Show();
         }
     }
 
     void BackToCreateARRoom()
     {
-        errorMessageBox.transform.localScale = new Vector2(0, 1);
+        warningSign.GetComponent<WarningSignHandler>().Hide();
         canvasManager.SwitchCanvas(CanvasType.CreateARRoom);
     }
 

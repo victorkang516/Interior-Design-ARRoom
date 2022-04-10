@@ -12,7 +12,7 @@ public class JoinARRoomUIHandler : MonoBehaviour
 
     InputField roomNameInputField;
     Button joinARRoomButton;
-    GameObject errorMessageBox;
+    GameObject warningSign;
 
     private void Start()
     {
@@ -27,8 +27,7 @@ public class JoinARRoomUIHandler : MonoBehaviour
 
         roomNameInputField = transform.Find("RoomNamePanel/RoomNameInputField").GetComponent<InputField>();
 
-        errorMessageBox = transform.Find("ErrorMessageBox").gameObject;
-        errorMessageBox.transform.localScale = new Vector2(0, 1);
+        warningSign = transform.Find("WarningSign").gameObject;
     }
 
     void JoinARRoom ()
@@ -36,16 +35,12 @@ public class JoinARRoomUIHandler : MonoBehaviour
         if (roomNameInputField.text.Length > 0)
             networkManager.JoinARRoom(roomNameInputField.text);
         else
-        {
-            errorMessageBox.transform.localScale = new Vector2(0, 1);
-            LeanTween.scale(errorMessageBox, new Vector2(1, 1), 0.1f).setEaseInSine();
-        }
-        
+            warningSign.GetComponent<WarningSignHandler>().Show();
     }
 
     void BackToMainMenu()
     {
-        errorMessageBox.transform.localScale = new Vector2(0, 1);
+        warningSign.GetComponent<WarningSignHandler>().Hide();
         canvasManager.SwitchCanvas(CanvasType.Home);
     }
 }

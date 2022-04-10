@@ -36,6 +36,12 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - SomeoneDeselectedTheObject
+  - SomeoneMovingTheObject
+  - SomeoneRotatingTheObject
+  - SomeoneSelectedAnObject
+  - SyncWithHostARModel
+  - SyncWithHost
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
