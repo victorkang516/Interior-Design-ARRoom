@@ -5,6 +5,7 @@ using System.Linq;
 
 public enum CanvasType {
     Login,
+    Register,
     Home,
     CreateARRoom,
     NewARRoom,
@@ -23,13 +24,19 @@ public class CanvasManager : MonoBehaviour
         canvasControllerList = gameObject.GetComponentsInChildren<CanvasController>().ToList();
         canvasControllerList.ForEach( canvasController => canvasController.gameObject.SetActive(false));
 
-        CanvasController mainMenuCanvasController = canvasControllerList.Find(canvasController => canvasController.canvasType == CanvasType.Login);
-        if (mainMenuCanvasController != null)
+        CanvasController initialCanvasController = canvasControllerList.Find(canvasController => canvasController.canvasType == CanvasType.Login);
+        if (initialCanvasController != null)
         {
-            mainMenuCanvasController.gameObject.SetActive(true);
-            lastActiveCanvas = mainMenuCanvasController;
+            initialCanvasController.gameObject.SetActive(true);
+            lastActiveCanvas = initialCanvasController;
         } 
-        else { Debug.LogWarning("CanvasManager: MainMenu Not Found"); }
+        else
+        {
+            initialCanvasController = canvasControllerList.Find(canvasController => canvasController.canvasType == CanvasType.Home);
+            initialCanvasController.gameObject.SetActive(true);
+            lastActiveCanvas = initialCanvasController;
+
+        }
     }
 
     public void SwitchCanvas(CanvasType desiredType)

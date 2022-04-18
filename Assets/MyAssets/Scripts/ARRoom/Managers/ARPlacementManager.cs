@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
 using UnityEngine.XR.ARFoundation;
+using Photon.Pun;
 
 public class ARPlacementManager : MonoBehaviour
 {
@@ -75,7 +75,6 @@ public class ARPlacementManager : MonoBehaviour
         confirmButton.onClick.AddListener(ChangeToARModificationMode);
 
         modificationGuidePanel = GameObject.Find("/Canvas/ARModificationMode/ModificationGuidePanel").gameObject.GetComponent<Image>();
-
     }
 
     private void PlayMovePhoneImageAnimation()

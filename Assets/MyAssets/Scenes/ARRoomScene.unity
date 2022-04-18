@@ -1074,49 +1074,13 @@ MonoBehaviour:
   selectables: []
   onSelected:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 983203205}
-        m_TargetAssemblyTypeName: ARModificationManager, Assembly-CSharp
-        m_MethodName: SelectARObject
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onDeselected:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 983203205}
-        m_TargetAssemblyTypeName: ARModificationManager, Assembly-CSharp
-        m_MethodName: DeselectARObject
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onNothing:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 983203205}
-        m_TargetAssemblyTypeName: ARModificationManager, Assembly-CSharp
-        m_MethodName: DeselectARObject
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   ScreenQuery:
     Method: 0
     Layers:
@@ -2832,6 +2796,7 @@ MonoBehaviour:
   firstFloor: {fileID: 0}
   upperWallList: []
   middleWallList: []
+  playerManager: {fileID: 0}
 --- !u!1 &1018268146
 GameObject:
   m_ObjectHideFlags: 0
@@ -2998,7 +2963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1215637472
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3049,7 +3014,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057fa37f6ae4f124db9189f8cb045264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  socketManagerPrefab: {fileID: 9014988114820206341, guid: 3783b719b5b9a094d993821144bd354a, type: 3}
+  allPhotonViews: []
+  playerColors:
+  - {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  playerManagerPrefab: {fileID: 9014988114820206341, guid: 3783b719b5b9a094d993821144bd354a, type: 3}
+  sofaPrefabs: []
+  bedPrefabs: []
 --- !u!4 &1241319243
 Transform:
   m_ObjectHideFlags: 0
@@ -4378,7 +4352,7 @@ GameObject:
   - component: {fileID: 1813888559}
   - component: {fileID: 1813888558}
   m_Layer: 5
-  m_Name: Debug2
+  m_Name: DebugText2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4609,7 +4583,7 @@ GameObject:
   - component: {fileID: 1939281284}
   - component: {fileID: 1939281285}
   m_Layer: 5
-  m_Name: Debug1
+  m_Name: DebugText1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

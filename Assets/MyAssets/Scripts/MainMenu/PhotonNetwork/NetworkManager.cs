@@ -43,6 +43,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         canvasManager = GameObject.Find("/Canvas").GetComponent<CanvasManager>();
         exceptionMessageBoxHandler = GameObject.Find("/Canvas/MessagePage").GetComponent<ExceptionMessageBoxHandler>();
+
+        Connect();
     }
 
     #endregion

@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 
+using Photon.Pun;
+
 public class ARManager : MonoBehaviour
 {
     ARSession aRSession;
     ARPlacementManager aRPlacementManager;
     ARModificationManager aRModificationManager;
 
-    GameObject aRModel;
+    public GameObject aRModel;
     ARModel selectedARModel;
 
     Button resetButton;

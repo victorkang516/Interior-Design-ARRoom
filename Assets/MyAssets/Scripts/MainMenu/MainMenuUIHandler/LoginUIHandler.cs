@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 using Photon.Pun;
 
 public class LoginUIHandler : MonoBehaviour
 {
-
-    NetworkManager networkManager;
+    CanvasManager canvasManager;
 
     InputField emailInputField;
     InputField passwordInputField;
     Button loginButton;
+    Button registerPageButton;
 
     GameObject warningSign;
 
@@ -21,8 +22,9 @@ public class LoginUIHandler : MonoBehaviour
 
     void Start()
     {
+
         string defaultName = string.Empty;
-        emailInputField = GameObject.Find("/Canvas/LoginPage/LoginPanel/EmailInputField").GetComponent<InputField>();
+        emailInputField = GameObject.Find("EmailInputField").GetComponent<InputField>();
         if (emailInputField != null)
         {
             if (PlayerPrefs.HasKey(playerNamePrefKey))
@@ -35,10 +37,14 @@ public class LoginUIHandler : MonoBehaviour
         PhotonNetwork.NickName = defaultName;
         emailInputField.onValueChanged.AddListener((name) => { SetPlayerName(name); });
 
-        networkManager = GameObject.Find("/NetworkManager").GetComponent<NetworkManager>();
 
-        loginButton = GameObject.Find("/Canvas/LoginPage/LoginPanel/LoginButton").GetComponent<Button>();
+        canvasManager = GameObject.Find("/Canvas").GetComponent<CanvasManager>();
+
+        loginButton = GameObject.Find("LoginButton").GetComponent<Button>();
         loginButton.onClick.AddListener(Login);
+
+        registerPageButton = GameObject.Find("RegisterPageButton").GetComponent<Button>();
+        registerPageButton.onClick.AddListener(SwitchToRegisterPage);
 
         warningSign = transform.Find("WarningSign").gameObject;
     }
@@ -62,11 +68,16 @@ public class LoginUIHandler : MonoBehaviour
     void Login ()
     {
         if (PlayerPrefs.GetString(playerNamePrefKey).Length > 0)
-            ConnectToPhotonNetworkWithNetworkManager();
+            ChangeToMainMenuScene();
     }
 
-    void ConnectToPhotonNetworkWithNetworkManager ()
+    void ChangeToMainMenuScene ()
     {
-        networkManager.Connect();
+        SceneManager.LoadScene(1);
+    }
+
+    void SwitchToRegisterPage ()
+    {
+        canvasManager.SwitchCanvas(CanvasType.Register);
     }
 }

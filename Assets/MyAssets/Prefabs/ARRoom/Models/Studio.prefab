@@ -1070,6 +1070,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37b7caab6154faf42b5597e56f3e7b2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelType: 0
   ModelName: Studio
   Thumbnail: {fileID: 21300000, guid: 405af173253e969439ef26f5d95503e5, type: 3}
   ModelDescription: A studio apartment is generally a self-contained space that houses

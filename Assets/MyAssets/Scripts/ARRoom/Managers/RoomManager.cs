@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+using System.Collections.Generic;
 
 
 using UnityEngine;
@@ -17,12 +16,22 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     #region
 
-    public GameObject socketManagerPrefab;
+    ARModificationManager aRModificationManager;
 
-    private SocketManager socketManager;
-    //private InputManager inputManager;
+
+    public List<PhotonView> allPhotonViews;
+    public Color[] playerColors = { Color.gray, Color.green, Color.cyan, Color.red, Color.yellow };
+
+
+    public GameObject playerManagerPrefab;
+    PlayerManager playerManager;
 
     Button exitButton;
+
+    // Temporary here for implementation
+    public GameObject[] sofaPrefabs;
+    public GameObject[] bedPrefabs;
+
 
     #endregion
 
@@ -31,21 +40,20 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        //inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
+        aRModificationManager = GameObject.Find("ARModificationMode").GetComponent<ARModificationManager>();
 
         exitButton = GameObject.Find("/Canvas/ARBasicMode/TopLeftPanel/ExitButton").GetComponent<Button>();
         exitButton.onClick.AddListener(LeaveRoom);
 
-        if (socketManagerPrefab == null)
+        if (playerManagerPrefab == null)
         {
             Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
         }
         else
         {
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            socketManager = PhotonNetwork.Instantiate(socketManagerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0).GetComponent<SocketManager>();
-
-            //inputManager.socketManager = socketManager;
+            playerManager = PhotonNetwork.Instantiate(playerManagerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0).GetComponent<PlayerManager>();
+            aRModificationManager.playerManager = playerManager;
         }
     }
 
@@ -75,7 +83,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public override void OnPlayerEnteredRoom(Player other)
     {
         Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
-        socketManager.someoneEnteredRoom = true;
+        playerManager.someoneEnteredRoom = true;
 
         if (PhotonNetwork.IsMasterClient)
         {
