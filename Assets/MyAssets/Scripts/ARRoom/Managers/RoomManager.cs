@@ -17,20 +17,24 @@ public class RoomManager : MonoBehaviourPunCallbacks
     #region
 
     ARModificationManager aRModificationManager;
+    ObjectListHandler objectListHandler;
 
 
     public List<PhotonView> allPhotonViews;
-    public Color[] playerColors = { Color.gray, Color.green, Color.cyan, Color.red, Color.yellow };
-
 
     public GameObject playerManagerPrefab;
-    PlayerManager playerManager;
+    public PlayerManager playerManager;
 
+
+    public GameObject roomMemberItemPrefab;
+
+    GameObject roomPanel;
+    RoomPanelHandler roomPanelHandler;
+    Button bottomPanel;
     Button exitButton;
+    Text roomNameText;
 
-    // Temporary here for implementation
-    public GameObject[] sofaPrefabs;
-    public GameObject[] bedPrefabs;
+    RoomMessageBoxHandler roomMessageBoxHandler;
 
 
     #endregion
@@ -41,9 +45,21 @@ public class RoomManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         aRModificationManager = GameObject.Find("ARModificationMode").GetComponent<ARModificationManager>();
+        objectListHandler = GameObject.Find("/Canvas/ARModificationMode/ObjectListPanel/Scroll/Panel").GetComponent<ObjectListHandler>();
+
+        roomPanel = GameObject.Find("/Canvas/ARBasicMode/RoomPanel");
+        roomPanelHandler = roomPanel.GetComponent<RoomPanelHandler>();
+
+        bottomPanel = GameObject.Find("/Canvas/ARBasicMode/RoomPanel/Bottom").GetComponent<Button>();
+        bottomPanel.onClick.AddListener(ShowRoomPanel);
+
+        roomNameText = GameObject.Find("/Canvas/ARBasicMode/RoomPanel/Bottom/RoomNameText").GetComponent<Text>();
+        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
 
         exitButton = GameObject.Find("/Canvas/ARBasicMode/TopLeftPanel/ExitButton").GetComponent<Button>();
         exitButton.onClick.AddListener(LeaveRoom);
+
+        roomMessageBoxHandler = GameObject.Find("/Canvas/ARBasicMode/RoomMessageBox").GetComponent<RoomMessageBoxHandler>();
 
         if (playerManagerPrefab == null)
         {
@@ -54,6 +70,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
             playerManager = PhotonNetwork.Instantiate(playerManagerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0).GetComponent<PlayerManager>();
             aRModificationManager.playerManager = playerManager;
+            objectListHandler.playerManager = playerManager;
         }
     }
 
@@ -62,17 +79,21 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     #region Private Methods
 
-
-    void LoadArena()
+    void RefreshRoomPanelList()
     {
-        if (!PhotonNetwork.IsMasterClient)
+        foreach (Transform child in roomPanel.transform.GetChild(0).GetChild(0))
         {
-            Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");
+            Destroy(child.gameObject);
         }
-        Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-        PhotonNetwork.LoadLevel("ARRoomScene");
-    }
 
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            GameObject roomMemberItem = Instantiate(roomMemberItemPrefab, roomPanel.transform.GetChild(0).GetChild(0));
+            roomMemberItem.transform.GetChild(0).GetComponent<Text>().text = player.NickName;
+            roomMemberItem.name = player.NickName;
+        }
+
+    }
 
     #endregion
 
@@ -82,8 +103,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player other)
     {
+        roomMessageBoxHandler.onPlayerJoined(other.NickName);
+        RefreshRoomPanelList();
+
         Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
-        playerManager.someoneEnteredRoom = true;
+        
+        if (PhotonNetwork.IsMasterClient)
+            playerManager.EmitSyncWithHost(MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().ModelName);
+
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -94,8 +121,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player other)
     {
-        Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
+        roomMessageBoxHandler.onPlayerLeft(other.NickName);
+        RefreshRoomPanelList();
 
+        Debug.LogFormat("OnPlayerLeftRoom() {0}", other.NickName); // seen when other disconnects
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -109,7 +138,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     /// </summary>
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
 
@@ -118,6 +147,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     #region Public Methods
 
+
+    public void ShowRoomPanel ()
+    {
+        roomPanelHandler.Trigger();
+        RefreshRoomPanelList();
+    }
 
     public void LeaveRoom()
     {

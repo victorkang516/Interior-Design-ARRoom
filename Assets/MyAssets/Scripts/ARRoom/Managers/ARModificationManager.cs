@@ -52,7 +52,6 @@ public class ARModificationManager : MonoBehaviour
     public PlayerManager playerManager;
     private Lean.Touch.LeanSelectByFinger leanSelectByFinger;
     private float yBoundary;
-    //public GameObject desiredObjectPrefab = null;
 
 
     #endregion
@@ -285,46 +284,26 @@ public class ARModificationManager : MonoBehaviour
 
     public void SelectObject(Lean.Common.LeanSelectable leanSelectable)
     {
-        
-        StartCoroutine(WaitAWhileThenSelectObject(leanSelectable.gameObject));
+        yBoundary = leanSelectable.gameObject.transform.position.y;
 
-    }
+        //playerManager.myCurrentSelectedObject = leanSelectable.gameObject;
+        playerManager.EmitSelectObject(leanSelectable.gameObject);
 
-    IEnumerator WaitAWhileThenSelectObject(GameObject selectedObject)
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        playerManager.myCurrentSelectedObject = selectedObject;
-
-        yBoundary = playerManager.myCurrentSelectedObject.transform.position.y;
-
-        ShowObjectListPanel(playerManager.myCurrentSelectedObject);
-        ShowGuidePanels(playerManager.myCurrentSelectedObject);
+        ShowObjectListPanel(leanSelectable.gameObject);
+        ShowGuidePanels(leanSelectable.gameObject);
     }
 
     public void DeselectObject(Lean.Common.LeanSelectable leanSelectable)
     {
-        if (playerManager.myCurrentSelectedObject == null)
-            return;
-
-        HideGuidePanels(playerManager.myCurrentSelectedObject);
-        HideObjectListPanel(playerManager.myCurrentSelectedObject);
-
-        playerManager.myCurrentSelectedObject = null;
+        Deselect();
     }
 
     public void DeselectObject()
     {
-        if (playerManager.myCurrentSelectedObject == null)
-            return;
-
-        HideGuidePanels(playerManager.myCurrentSelectedObject);
-        HideObjectListPanel(playerManager.myCurrentSelectedObject);
-
-        playerManager.myCurrentSelectedObject = null;
+        Deselect();
     }
 
-    public void DeselectObjectByOther()
+    private void Deselect ()
     {
         if (playerManager.myCurrentSelectedObject == null)
             return;
@@ -332,104 +311,18 @@ public class ARModificationManager : MonoBehaviour
         HideGuidePanels(playerManager.myCurrentSelectedObject);
         HideObjectListPanel(playerManager.myCurrentSelectedObject);
 
-        playerManager.myCurrentSelectedObject = null;
-    }
-
-    public void ChangeObjectModel()
-    {
-        //desiredObjectPrefab = roomManager.sofaPrefabs[0];
+        playerManager.EmitDeselectObject();
     }
 
 
     #endregion
 
-    //public void SelectARObject (Lean.Common.LeanSelectable leanSelectable)
-    //{
-    //    currentSelectable = leanSelectable.gameObject;
-    //    yBoundary = currentSelectable.transform.position.y;
-
-    //    TriggerOutline(true);
-    //    ShowObjectListPanel();
-    //    ShowGuidePanels();
-    //}
-
-    //public void DeselectARObject()
-    //{
-    //    HideGuidePanels();
-    //    HideObjectListPanel();
-    //    TriggerOutline(false);
-
-    //    currentSelectable = null;
-    //}
-
-    //private void TriggerOutline (bool isEnabled)
-    //{
-    //    if (currentSelectable.CompareTag("Paint") || currentSelectable.CompareTag("Floor"))
-    //    {
-    //        GameObject room = currentSelectable.transform.parent.gameObject;
-    //        Outline[] childrenOutline = room.GetComponentsInChildren<Outline>();
-    //        foreach (Outline outline in childrenOutline)
-    //        {
-    //            outline.enabled = isEnabled;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        currentSelectable.GetComponent<Outline>().enabled = isEnabled;
-    //    }
-    //}
-
-    //private void ShowObjectListPanel ()
-    //{
-    //    if (!currentSelectable.CompareTag("Toilet") && !currentSelectable.CompareTag("Shower"))
-    //    {
-    //        LeanTween.scale(objectListPanel.gameObject, new Vector2(1, 1), 0.25f).setEaseInOutQuart();
-    //        objectListHandler.CreateObjectList(currentSelectable);
-    //    }
-    //}
-
-    //private void HideObjectListPanel()
-    //{
-    //    if (!currentSelectable.CompareTag("Toilet") && !currentSelectable.CompareTag("Shower"))
-    //    {
-    //        LeanTween.scale(objectListPanel.gameObject, new Vector2(0, 1), 0.25f).setEaseInOutQuart();
-    //        objectListHandler.EmptyObjectList();
-    //    }
-    //}
-
-    //private void ShowGuidePanels ()
-    //{
-    //    if (!currentSelectable.CompareTag("Paint") && !currentSelectable.CompareTag("Floor"))
-    //    {
-    //        LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.25f).setEaseOutBack();
-    //        LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(1, 1), 0.25f).setEaseOutBack();
-    //    }
-    //}
-
-    //private void HideGuidePanels()
-    //{
-    //    if (!currentSelectable.CompareTag("Paint") && !currentSelectable.CompareTag("Floor"))
-    //    {
-    //        LeanTween.scale(moveGuidePanel.gameObject, new Vector2(0, 0), 0.25f).setEaseInBack();
-    //        LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(0, 0), 0.25f).setEaseInBack();
-    //    }
-    //}
-
-    //private void CloseModificationGuidePanel()
-    //{
-    //    LeanTween.scale(modificationGuidePanel.gameObject, new Vector2(0, 0), 0.1f);
-    //}
-
 
     public void RestartUIFlow()
     {
-        //moveGuidePanel.gameObject.transform.localScale = Vector2.zero;
-        //pinchGuidePanel.gameObject.transform.localScale = Vector2.zero;
+        moveGuidePanel.gameObject.transform.localScale = Vector2.zero;
+        pinchGuidePanel.gameObject.transform.localScale = Vector2.zero;
 
-        //if (currentSelectable != null)
-        //{
-        //    DeselectARObject();
-        //}
-
+        DeselectObject();
     }
 }

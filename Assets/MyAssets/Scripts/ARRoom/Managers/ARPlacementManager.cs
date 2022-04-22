@@ -79,7 +79,7 @@ public class ARPlacementManager : MonoBehaviour
 
     private void PlayMovePhoneImageAnimation()
     {
-        LeanTween.moveLocalX(movePhoneImage.gameObject, -100.0f, 1.0f).setEaseInOutSine().setLoopPingPong();
+        LeanTween.scale(movePhoneImage.gameObject, new Vector3(1.5f, 1.5f, 1.5f), 1.0f).setEaseInOutSine().setLoopPingPong();
     }
 
     public void RestartUIFlow ()

@@ -44,15 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1422b35a56b094c4cb865d1cc60e3e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomManager: {fileID: 0}
+  objectsPrefabStorage: {fileID: 0}
   PlayerUiPrefab: {fileID: 6380461606599001622, guid: ff2cde04b38b4ca44861dadb1fe21d12, type: 3}
   _uiGo: {fileID: 0}
   myPlayerColor: {r: 0, g: 0, b: 0, a: 0}
-  someoneEnteredRoom: 1
-  myPreviousSelectedObject: {fileID: 0}
   myCurrentSelectedObject: {fileID: 0}
-  isDeselected: 1
-  debug1: {fileID: 0}
-  debug2: {fileID: 0}
 --- !u!114 &-4784413565357543917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,7 +65,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:

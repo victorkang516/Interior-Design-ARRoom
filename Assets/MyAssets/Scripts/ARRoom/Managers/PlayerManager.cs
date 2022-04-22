@@ -11,10 +11,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     #region Network Variables
 
     private PhotonView myPhotonView;
+    public RoomManager roomManager;
     private ARManager aRManager;
-    private RoomManager roomManager;
-
-    private GameObject aRModel;
+    public ObjectsPrefabStorage objectsPrefabStorage;
 
     [Tooltip("The Player's UI GameObject Prefab")]
     [SerializeField]
@@ -23,24 +22,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject _uiGo;
     public Color myPlayerColor;
 
-    public bool someoneEnteredRoom = false;
-
-    public GameObject myPreviousSelectedObject = null;
     public GameObject myCurrentSelectedObject = null;
-
-    public bool isDeselected = true;
-
 
     private Quaternion previousModelRotation = Quaternion.Euler(0, 0, 0);
     private Vector3 previousModelScaling = Vector3.zero;
 
     private Vector3 previousPosition = Vector3.zero;
     private Quaternion previousRotation = Quaternion.Euler(0, 0, 0);
-
-    // temporary button
-    //private Button item1;
-    public Text debug1;
-    public Text debug2;
 
     #endregion
 
@@ -53,11 +41,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
         /// Network variables/gameobjects initialization
         myPhotonView = GetComponent<PhotonView>();
-
-        aRManager = GameObject.Find("Canvas").GetComponent<ARManager>();
-
         roomManager = GameObject.Find("/RoomManager").GetComponent<RoomManager>();
         roomManager.allPhotonViews.Add(myPhotonView);
+
+        aRManager = GameObject.Find("Canvas").GetComponent<ARManager>();
+        objectsPrefabStorage = GameObject.Find("ObjectsPrefabStorage").GetComponent<ObjectsPrefabStorage>();
 
         if (PlayerUiPrefab != null)
         {
@@ -65,41 +53,37 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
             _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
 
-        // Temporary
-        //item1 = GameObject.Find("ChangeModelButton").GetComponent<Button>();
-        //item1.onClick.AddListener(ChangeObjectModel);
-
         InitializePlayerColor();
-
-        debug1 = GameObject.Find("DebugText1").GetComponent<Text>();
-        debug2 = GameObject.Find("DebugText2").GetComponent<Text>();
-
-        debug1.text = Time.fixedTime + ": PlayerManager: " + photonView.Owner.NickName;
     }
 
     private void InitializePlayerColor()
     {
-        switch (photonView.ViewID)
+        float hue = UnityEngine.Random.Range(0.0f, 1.0f);
+        myPlayerColor = Color.HSVToRGB(hue, 1, 1);
+    }
+
+
+    private void Update()
+    {
+        if (photonView.IsMine)
         {
-            case 1001:
-                myPlayerColor = roomManager.playerColors[1];
-                break;
-            case 2001:
-                myPlayerColor = roomManager.playerColors[2];
-                break;
-            case 3001:
-                myPlayerColor = roomManager.playerColors[3];
-                break;
-            case 4001:
-                myPlayerColor = roomManager.playerColors[4];
-                break;
-            default:
-                myPlayerColor = roomManager.playerColors[0];
-                break;
+            if (CheckIfTheARModelExistAndARModelIsActiveInHierarchy() && Lean.Touch.LeanTouch.Fingers.Count == 2)
+            {
+                if (CheckIfThisPlayerRotateOrScalingTheARModel())
+                    EmitRotateAndScaleTheARModel(aRManager.aRModel.transform.rotation, aRManager.aRModel.transform.localScale);
+            }
+
+            if (myCurrentSelectedObject != null)
+            {
+                if (CheckIfThisPlayerMovingTheObject())
+                    EmitMoveTheObject(myCurrentSelectedObject.transform.position - previousPosition);
+
+                if (CheckIfThisPlayerRotatingTheObject())
+                    EmitRotateTheObject(myCurrentSelectedObject.transform.rotation);
+            }
         }
     }
 
-    
     #endregion
 
 
@@ -108,60 +92,29 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
         if (stream.IsWriting)
         {
-            if (someoneEnteredRoom)
-            {
-                EmitSyncWithHost(MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().ModelName);
-            }
-
-
-            if (aRManager.aRModel.activeInHierarchy && aRManager.aRModel != null && Lean.Touch.LeanTouch.Fingers.Count == 2)
-            {
-                if (CheckIfThisPlayerRotateAndScalingTheARModel())
-                    EmitRotateAndScaleTheARModel(aRManager.aRModel.transform.rotation, aRManager.aRModel.transform.localScale);
-            }
-   
-
-            // We own this player: send the others our data
-            if (myCurrentSelectedObject != null)
-            {
-
-                if (myCurrentSelectedObject != myPreviousSelectedObject || isDeselected == true)
-                    EmitSelectObject(myCurrentSelectedObject.name);
-
-                if (CheckIfThisPlayerMovingTheObject())
-                    EmitMoveTheObject(myCurrentSelectedObject.transform.position-previousPosition);
-
-                if (CheckIfThisPlayerRotatingTheObject())
-                    EmitRotateTheObject(myCurrentSelectedObject.transform.rotation);
-
-                //if (desiredObjectPrefab != null)
-                //    EmitChangeTheObjectModelTo(desiredObjectPrefab.name, desiredObjectPrefab.tag);
-            }
-            else if (myCurrentSelectedObject == null && isDeselected == false)
-            {
-                EmitDeselectObject(myPreviousSelectedObject.name);
-            }
+            //Debug.Log("NetworkManager: Sending");
         }
         else
         {
-            Debug.Log("NetworkManager: Receiving");
+            //Debug.Log("NetworkManager: Receiving");
         }
     }
 
-    bool CheckIfThisPlayerRotateAndScalingTheARModel ()
+    bool CheckIfTheARModelExistAndARModelIsActiveInHierarchy ()
     {
-        if (previousModelRotation != aRManager.aRModel.transform.rotation || previousModelScaling != aRManager.aRModel.transform.localScale)
-            return true;
-        
-        return false;
+        return aRManager.aRModel.activeInHierarchy && aRManager.aRModel != null;
+    }
+
+    bool CheckIfThisPlayerRotateOrScalingTheARModel ()
+    {
+        return previousModelRotation != aRManager.aRModel.transform.rotation || previousModelScaling != aRManager.aRModel.transform.localScale;
     }
 
     bool CheckIfThisPlayerMovingTheObject()
     {
-        return previousPosition != myCurrentSelectedObject.transform.position && Lean.Touch.LeanTouch.Fingers.Count == 0;
+        return previousPosition != myCurrentSelectedObject.transform.position && Lean.Touch.LeanTouch.Fingers.Count == 1;
     }
 
     bool CheckIfThisPlayerRotatingTheObject()
@@ -169,46 +122,44 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         return previousRotation != myCurrentSelectedObject.transform.rotation && Lean.Touch.LeanTouch.Fingers.Count == 2;
     }
 
-    void EmitSyncWithHost(string aRModelName)
+    public void EmitSyncWithHost(string aRModelName)
     {
-        Debug.Log("SocketManager: Emit SyncWithHost" + aRModelName);
         photonView.RPC("SyncWithHost", RpcTarget.Others, aRModelName);
-        someoneEnteredRoom = false;
     }
 
-    void EmitRotateAndScaleTheARModel (Quaternion modelRotation, Vector3 modelScale)
+    public void EmitRotateAndScaleTheARModel (Quaternion modelRotation, Vector3 modelScale)
     {
         photonView.RPC("RotateAndScaleARModel", RpcTarget.Others, modelRotation, modelScale);
         previousModelRotation = aRManager.aRModel.transform.rotation;
         previousModelScaling = aRManager.aRModel.transform.localScale;
     }
 
-    void EmitSelectObject(string objectName)
+    public void EmitSelectObject(GameObject selectedGameObject)
     {
-        previousPosition = myCurrentSelectedObject.transform.position;
-        photonView.RPC("ISelectedAnObject", RpcTarget.All, objectName);
+        previousPosition = selectedGameObject.transform.position;
+        photonView.RPC("ISelectedAnObject", RpcTarget.All, selectedGameObject.name);
     }
 
-    void EmitMoveTheObject(Vector3 travelDistance)
+    public void EmitMoveTheObject(Vector3 travelDistance)
     {
+        previousPosition = myCurrentSelectedObject.transform.position;
         photonView.RPC("IMovedTheObject", RpcTarget.Others, travelDistance);
-        previousPosition = myCurrentSelectedObject.transform.position;
     }
 
-    void EmitRotateTheObject(Quaternion objectRotation)
+    public void EmitRotateTheObject(Quaternion objectRotation)
     {
-        photonView.RPC("IRotatedTheObject", RpcTarget.All, objectRotation);
         previousRotation = myCurrentSelectedObject.transform.rotation;
+        photonView.RPC("IRotatedTheObject", RpcTarget.Others, objectRotation);
     }
 
-    //void EmitChangeTheObjectModelTo(string desiredObjectName, string objectTag)
-    //{
-    //    photonView.RPC("IChangeTheObjectModelTo", RpcTarget.All, desiredObjectName, objectTag);
-    //}
-
-    void EmitDeselectObject(string objectName)
+    public void EmitChangeTheObjectModelTo(int itemIndex, string objectTag)
     {
-        photonView.RPC("IDeselectedTheObject", RpcTarget.All, objectName);
+        photonView.RPC("IChangeTheObjectModelTo", RpcTarget.All, itemIndex, objectTag);
+    }
+
+    public void EmitDeselectObject()
+    {
+        photonView.RPC("IDeselectedTheObject", RpcTarget.All, myCurrentSelectedObject.name);
         previousPosition = Vector3.zero;
     }
 
@@ -217,6 +168,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
 
     #region Pun RPC
+
 
     [PunRPC]
     void SyncWithHost(string roomARModelName)
@@ -230,8 +182,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
                 MainManager.Instance.selectedARModelPrefab = aRModelPrefab;
             }
         }
-        
-        
     }
 
     [PunRPC]
@@ -247,34 +197,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         GameObject theSelectedObject = GameObject.Find(objectName);
         myCurrentSelectedObject = theSelectedObject;
 
-        //foreach (PhotonView photonView in roomManager.allPhotonViews)
-        //{
-        //    if (photonView != myPhotonView)
-        //    {
-        //        if (photonView.GetComponent<PlayerManager>().myCurrentSelectedObject == myCurrentSelectedObject)
-        //        {
-        //            Debug.Log(photonView.ViewID + " Call DeselectedObject");
-        //            photonView.GetComponent<PlayerManager>().EmitDeselectObject(myCurrentSelectedObject.name);
-        //        }
-        //    }
-        //}
-
-        StartCoroutine(WaitAWhileThenShowOutline());
-
         _uiGo.GetComponent<PlayerUI>().Show();
         _uiGo.GetComponent<PlayerUI>().SetPositionToSelectedObject();
-
-        isDeselected = false;
-        myPreviousSelectedObject = myCurrentSelectedObject;
-
-
-    }
-    IEnumerator WaitAWhileThenShowOutline()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        if (myPreviousSelectedObject != null)
-            TriggerOutline(myPreviousSelectedObject, false);
 
         TriggerOutline(myCurrentSelectedObject, true);
     }
@@ -283,29 +207,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     void IMovedTheObject(Vector3 travelDistance)
     {
-        Vector3 newPosition = new Vector3(myCurrentSelectedObject.transform.position.x + travelDistance.x, myCurrentSelectedObject.transform.position.y, myCurrentSelectedObject.transform.position.z + travelDistance.z);
-        myCurrentSelectedObject.transform.position = newPosition;
-    }
+        Vector3 myCurrentObjectPosition = myCurrentSelectedObject.transform.position;
 
-    //[PunRPC]
-    //void IMovedTheObject(Vector3 objectPosition, Quaternion modelRotation)
-    //{
-    //    Vector3 positionAfterRotation = CalculateVectorAfterRotation(objectPosition, modelRotation);
-    //    debug1.text = Time.fixedTime + ": PlayerManager: positionBefore " + objectPosition + "" + " positionAfter " + positionAfterRotation;
-
-    //    Vector3 newPosition = new Vector3(myCurrentSelectedObject.transform.position.x + positionAfterRotation.x, myCurrentSelectedObject.transform.position.y, myCurrentSelectedObject.transform.position.z + positionAfterRotation.z);
-    //    myCurrentSelectedObject.transform.position = newPosition;
-
-        
-    //}
-
-    Vector3 CalculateVectorAfterRotation(Vector3 objectPosition, Quaternion modelRotation)
-    {
-        double angleInRadian = (Quaternion.Angle(aRManager.aRModel.transform.rotation, modelRotation) * Math.PI) / 180;
-        float x2 = (float)( (Math.Cos(angleInRadian) * objectPosition.x) - (Math.Sin(angleInRadian) * objectPosition.z) );
-        float z2 = (float)( (Math.Sin(angleInRadian) * objectPosition.x) + (Math.Cos(angleInRadian) * objectPosition.z) );
-        debug2.text = Time.fixedTime + ": PlayerManager: Angle Radian Between is " + angleInRadian + " x2 & z2 are " + x2 + "&" + z2;
-        return new Vector3(x2, 0, z2);
+        myCurrentSelectedObject.transform.position = new Vector3(myCurrentObjectPosition.x + travelDistance.x, myCurrentObjectPosition.y, myCurrentObjectPosition.z + travelDistance.z);
     }
 
     [PunRPC]
@@ -314,28 +218,95 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         myCurrentSelectedObject.transform.rotation = objectRotation;
     }
 
-    //[PunRPC]
-    //void IChangeTheObjectModelTo(string desiredObjectName, string objectTag)
-    //{
-    //    switch (objectTag)
-    //    {
-    //        case "Sofa":
-    //            foreach (GameObject sofa in roomManager.sofaPrefabs)
-    //            {
-    //                if (sofa.name == desiredObjectName)
-    //                {
-    //                    GameObject newObject = Instantiate(sofa, myCurrentSelectedObject.transform.position, myCurrentSelectedObject.transform.rotation, myCurrentSelectedObject.transform.parent);
-    //                    newObject.name = myCurrentSelectedObject.name;
+    [PunRPC]
+    void IChangeTheObjectModelTo(int itemIndex, string objectTag)
+    {
+        if (myCurrentSelectedObject == null)
+            return;
 
-    //                    myPreviousSelectedObject = newObject;
+        //debug1.text = Time.fixedTime + ": PlayerManager: IChange: index is " + itemIndex + " with tag " + objectTag;
+        switch (objectTag)
+        {
+            case "Bed":
+                ReplaceObjectWith(objectsPrefabStorage.bedPrefabs[itemIndex]);
+                break;
+            case "Sofa":
+                ReplaceObjectWith(objectsPrefabStorage.sofaPrefabs[itemIndex]);
+                break;
+            case "Rack":
+                ReplaceObjectWith(objectsPrefabStorage.rackPrefabs[itemIndex]);
+                break;
+            case "Cabinet":
+                ReplaceObjectWith(objectsPrefabStorage.cabinetPrefabs[itemIndex]);
+                break;
+            case "TV Table":
+                ReplaceObjectWith(objectsPrefabStorage.tvTablePrefabs[itemIndex]);
+                break;
+            case "Coffee Table":
+                ReplaceObjectWith(objectsPrefabStorage.coffeeTablePrefabs[itemIndex]);
+                break;
+            case "Lamp":
+                ReplaceObjectWith(objectsPrefabStorage.lampPrefabs[itemIndex]);
+                break;
+            case "Office Table":
+                ReplaceObjectWith(objectsPrefabStorage.officeTablePrefabs[itemIndex]);
+                break;
+            case "Chair":
+                ReplaceObjectWith(objectsPrefabStorage.chairPrefabs[itemIndex]);
+                break;
+            case "Kitchen Chair":
+                ReplaceObjectWith(objectsPrefabStorage.kitchenChairPrefabs[itemIndex]);
+                break;
+            case "Kitchen Table":
+                ReplaceObjectWith(objectsPrefabStorage.kitchenTablePrefabs[itemIndex]);
+                break;
+            case "Kitchen Shelf":
+                ReplaceObjectWith(objectsPrefabStorage.kitchenShelfPrefabs[itemIndex]);
+                break;
+            case "Modular Kitchen Table":
+                ReplaceObjectWith(objectsPrefabStorage.modularKitchenTablePrefabs[itemIndex]);
+                break;
+            case "Washbasin":
+                ReplaceObjectWith(objectsPrefabStorage.washbasinPrefabs[itemIndex]);
+                break;
+            case "Paint":
+                ReplacePaintWith(objectsPrefabStorage.paintMaterials[itemIndex].GetComponent<Renderer>().material);
+                break;
+            case "Floor":
+                ReplaceFloorWith(objectsPrefabStorage.floorMaterials[itemIndex].GetComponent<Renderer>().material);
+                break;
+        }
+    }
 
-    //                    Destroy(myCurrentSelectedObject);
-    //                    desiredObjectPrefab = null;
-    //                }
-    //            }
-    //            break;
-    //    }
-    //}
+    void ReplaceObjectWith(GameObject prefab)
+    {
+        GameObject newObject = Instantiate(prefab, myCurrentSelectedObject.transform.position, myCurrentSelectedObject.transform.rotation, myCurrentSelectedObject.transform.parent);
+        newObject.name = myCurrentSelectedObject.name;
+
+        Destroy(myCurrentSelectedObject);
+    }
+
+    private void ReplacePaintWith(Material material)
+    {
+        GameObject room = myCurrentSelectedObject.transform.parent.gameObject;
+        foreach (Transform wall in room.transform)
+        {
+            WallPaint[] wallPaints = wall.GetComponentsInChildren<WallPaint>();
+            foreach (WallPaint wallPaint in wallPaints)
+            {
+                wallPaint.GetComponent<Renderer>().material = material;
+            }
+        }
+    }
+
+    private void ReplaceFloorWith(Material material)
+    {
+        GameObject room = myCurrentSelectedObject.transform.parent.gameObject;
+        foreach (Transform floor in room.transform)
+        {
+            floor.GetComponent<Renderer>().material = material;
+        }
+    }
 
     [PunRPC]
     void IDeselectedTheObject(string objectName)
@@ -344,7 +315,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         TriggerOutline(theSelectedObject, false);
 
         myCurrentSelectedObject = null;
-        isDeselected = true;
 
         _uiGo.GetComponent<PlayerUI>().Hide();
     }

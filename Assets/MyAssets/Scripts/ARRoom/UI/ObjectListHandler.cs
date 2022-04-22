@@ -8,117 +8,72 @@ using UnityEngine.UI;
 public class ObjectListHandler : MonoBehaviour
 {
 
-
-    #region Furniture Prefabs
-
-    [SerializeField]
-    public GameObject[] bedPrefabs;
-    [SerializeField]
-    public GameObject[] sofaPrefabs;
-    [SerializeField]
-    public GameObject[] rackPrefabs;
-    [SerializeField]
-    public GameObject[] cabinetPrefabs;
-    [SerializeField]
-    public GameObject[] tvTablePrefabs;
-    [SerializeField]
-    public GameObject[] coffeeTablePrefabs;
-    [SerializeField]
-    public GameObject[] lampPrefabs;
-    [SerializeField]
-    public GameObject[] officeTablePrefabs;
-    [SerializeField]
-    public GameObject[] chairPrefabs;
-    [SerializeField]
-    public GameObject[] kitchenChairPrefabs;
-    [SerializeField]
-    public GameObject[] kitchenTablePrefabs;
-    [SerializeField]
-    public GameObject[] kitchenShelfPrefabs;
-    [SerializeField]
-    public GameObject[] modularKitchenTablePrefabs;
-    [SerializeField]
-    public GameObject[] washbasinPrefabs;
-
-    #endregion
-
-
-    #region Paint Materials
-
-    public GameObject[] paintMaterials;
-
-    #endregion
-
-
-    #region Floor Materials
-
-    public GameObject[] floorMaterials;
-
-    #endregion
-
-
     #region UI Prefab
     [SerializeField]
     GameObject objectItemPrefab;
     #endregion
 
-    private GameObject selectedObject;
+    public PlayerManager playerManager;
+    ObjectsPrefabStorage objectsPrefabStorage;
+
+    private void Start()
+    {
+        objectsPrefabStorage = GameObject.Find("ObjectsPrefabStorage").GetComponent<ObjectsPrefabStorage>();
+    }
 
 
     public void CreateObjectList (GameObject selectedObject)
     {
 
-        this.selectedObject = selectedObject;
-
-        switch (this.selectedObject.tag)
+        switch (selectedObject.tag)
         {
             case "Bed":
-                BindData(bedPrefabs);
+                BindData(objectsPrefabStorage.bedPrefabs);
                 break;
             case "Sofa":
-                BindData(sofaPrefabs);
+                BindData(objectsPrefabStorage.sofaPrefabs);
                 break;
             case "Rack":
-                BindData(rackPrefabs);
+                BindData(objectsPrefabStorage.rackPrefabs);
                 break;
             case "Cabinet":
-                BindData(cabinetPrefabs);
+                BindData(objectsPrefabStorage.cabinetPrefabs);
                 break;
             case "TV Table":
-                BindData(tvTablePrefabs);
+                BindData(objectsPrefabStorage.tvTablePrefabs);
                 break;
             case "Coffee Table":
-                BindData(coffeeTablePrefabs);
+                BindData(objectsPrefabStorage.coffeeTablePrefabs);
                 break;
             case "Lamp":
-                BindData(lampPrefabs);
+                BindData(objectsPrefabStorage.lampPrefabs);
                 break;
             case "Office Table":
-                BindData(officeTablePrefabs);
+                BindData(objectsPrefabStorage.officeTablePrefabs);
                 break;
             case "Chair":
-                BindData(chairPrefabs);
+                BindData(objectsPrefabStorage.chairPrefabs);
                 break;
             case "Kitchen Chair":
-                BindData(kitchenChairPrefabs);
+                BindData(objectsPrefabStorage.kitchenChairPrefabs);
                 break;
             case "Kitchen Table":
-                BindData(kitchenTablePrefabs);
+                BindData(objectsPrefabStorage.kitchenTablePrefabs);
                 break;
             case "Kitchen Shelf":
-                BindData(kitchenShelfPrefabs);
+                BindData(objectsPrefabStorage.kitchenShelfPrefabs);
                 break;
             case "Modular Kitchen Table":
-                BindData(modularKitchenTablePrefabs);
+                BindData(objectsPrefabStorage.modularKitchenTablePrefabs);
                 break;
             case "Washbasin":
-                BindData(washbasinPrefabs);
+                BindData(objectsPrefabStorage.washbasinPrefabs);
                 break;
             case "Paint":
-                BindData(paintMaterials);
+                BindData(objectsPrefabStorage.paintMaterials);
                 break;
             case "Floor":
-                BindData(floorMaterials);
+                BindData(objectsPrefabStorage.floorMaterials);
                 break;
         }
         
@@ -131,53 +86,17 @@ public class ObjectListHandler : MonoBehaviour
         {
             int x = i;
             GameObject selectionItem = Instantiate(objectItemPrefab, transform);
-            selectionItem.GetComponent<Button>().onClick.AddListener(() => { OnItemClicked(prefabs[x]); });
+            selectionItem.GetComponent<Button>().onClick.AddListener(() => { OnItemClicked(prefabs[x], x); });
             selectionItem.transform.GetChild(0).GetComponent<Image>().sprite = prefabs[i].GetComponent<ARObject>().Thumbnail;
             selectionItem.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = prefabs[i].GetComponent<ARObject>().ObjectName;
         }
     }
 
-    private void OnItemClicked (GameObject prefab)
+    private void OnItemClicked (GameObject prefab, int index)
     {
-        if (selectedObject.CompareTag("Paint"))
+        if (playerManager != null)
         {
-            ReplacePaintWith(prefab.GetComponent<Renderer>().material);
-        }
-        else if (selectedObject.CompareTag("Floor"))
-        {
-            ReplaceFloorWith(prefab.GetComponent<Renderer>().material);
-        }
-        else
-        {
-            ReplaceObjectWith(prefab);
-        }
-    }
-
-    private void ReplaceObjectWith(GameObject prefab)
-    {
-        Instantiate(prefab, selectedObject.transform.position, selectedObject.transform.rotation, selectedObject.transform.parent);
-        Destroy(selectedObject);
-    }
-
-    private void ReplacePaintWith (Material material)
-    {
-        GameObject room = selectedObject.transform.parent.gameObject;
-        foreach (Transform wall in room.transform)
-        {
-            WallPaint[] wallPaints = wall.GetComponentsInChildren<WallPaint>();
-            foreach (WallPaint wallPaint in wallPaints)
-            {
-                wallPaint.GetComponent<Renderer>().material = material;
-            }
-        }
-    }
-
-    private void ReplaceFloorWith(Material material)
-    {
-        GameObject room = selectedObject.transform.parent.gameObject;
-        foreach (Transform floor in room.transform)
-        {
-            floor.GetComponent<Renderer>().material = material;
+            playerManager.EmitChangeTheObjectModelTo(index, prefab.tag);
         }
     }
 
