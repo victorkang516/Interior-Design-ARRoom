@@ -8,12 +8,12 @@ public class RoomPanelHandler : MonoBehaviour
 
     public void Trigger()
     {
-        if (isShow)
-            LeanTween.moveLocalY(gameObject, 630, 0.2f).setEaseOutQuart();
-        else
-            LeanTween.moveLocalY(gameObject, 325, 0.2f).setEaseOutQuart();
-
         isShow = !isShow;
+
+        if (isShow)
+            LeanTween.moveLocalY(gameObject, 250, 0.2f).setEaseOutQuart();
+        else
+            LeanTween.moveLocalY(gameObject, 640, 0.2f).setEaseOutQuart();
     }
 
 }

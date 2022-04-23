@@ -53,13 +53,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
             _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
         }
 
-        InitializePlayerColor();
-    }
-
-    private void InitializePlayerColor()
-    {
-        float hue = UnityEngine.Random.Range(0.0f, 1.0f);
-        myPlayerColor = Color.HSVToRGB(hue, 1, 1);
+        EmitMyPlayerColor();
     }
 
 
@@ -122,6 +116,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         return previousRotation != myCurrentSelectedObject.transform.rotation && Lean.Touch.LeanTouch.Fingers.Count == 2;
     }
 
+
+    public void EmitMyPlayerColor()
+    {
+        float hue = UnityEngine.Random.Range(0.0f, 1.0f);
+        photonView.RPC("OnMyPlayerColor", RpcTarget.All, hue);
+    }
+
     public void EmitSyncWithHost(string aRModelName)
     {
         photonView.RPC("SyncWithHost", RpcTarget.Others, aRModelName);
@@ -169,6 +170,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
     #region Pun RPC
 
+    [PunRPC]
+    void OnMyPlayerColor (float hue)
+    {
+        myPlayerColor = Color.HSVToRGB(hue, 1, 1);
+    }
+
 
     [PunRPC]
     void SyncWithHost(string roomARModelName)
@@ -199,6 +206,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
 
         _uiGo.GetComponent<PlayerUI>().Show();
         _uiGo.GetComponent<PlayerUI>().SetPositionToSelectedObject();
+        _uiGo.GetComponent<Image>().color = myPlayerColor;
 
         TriggerOutline(myCurrentSelectedObject, true);
     }
@@ -224,7 +232,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         if (myCurrentSelectedObject == null)
             return;
 
-        //debug1.text = Time.fixedTime + ": PlayerManager: IChange: index is " + itemIndex + " with tag " + objectTag;
         switch (objectTag)
         {
             case "Bed":

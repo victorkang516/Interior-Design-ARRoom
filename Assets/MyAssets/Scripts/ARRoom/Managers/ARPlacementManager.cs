@@ -59,10 +59,10 @@ public class ARPlacementManager : MonoBehaviour
         PlayMovePhoneImageAnimation();
 
         moveGuidePanel = GameObject.Find("/Canvas/ARPlacementMode/MoveGuidePanel").gameObject.GetComponent<Image>();
-        moveGuidePanel.gameObject.transform.localScale = Vector2.zero;
+        moveGuidePanel.gameObject.SetActive(false);
 
         pinchGuidePanel = GameObject.Find("/Canvas/ARPlacementMode/PinchGuidePanel").gameObject.GetComponent<Image>();
-        pinchGuidePanel.gameObject.transform.localScale = Vector2.zero;
+        pinchGuidePanel.gameObject.SetActive(false);
 
         confirmGuidePanel = GameObject.Find("/Canvas/ARPlacementMode/ConfirmGuidePanel").gameObject.GetComponent<Image>();
         confirmGuidePanel.gameObject.transform.localScale = Vector2.zero;
@@ -77,28 +77,6 @@ public class ARPlacementManager : MonoBehaviour
         modificationGuidePanel = GameObject.Find("/Canvas/ARModificationMode/ModificationGuidePanel").gameObject.GetComponent<Image>();
     }
 
-    private void PlayMovePhoneImageAnimation()
-    {
-        LeanTween.scale(movePhoneImage.gameObject, new Vector3(1.5f, 1.5f, 1.5f), 1.0f).setEaseInOutSine().setLoopPingPong();
-    }
-
-    public void RestartUIFlow ()
-    {
-        displayCount = 0;
-        aRModelInitialPosition = Vector3.zero;
-        aRModelInitialScale = Vector3.zero;
-
-        aRModel.transform.Find("MoveIndicator").gameObject.SetActive(true);
-
-        pointCloudManager.SetTrackablesActive(true);
-        pointCloudManager.enabled = true;
-
-        movePhoneImage.gameObject.SetActive(true);
-        moveGuidePanel.gameObject.transform.localScale = Vector2.zero;
-        pinchGuidePanel.gameObject.transform.localScale = Vector2.zero;
-        confirmGuidePanel.gameObject.transform.localScale = Vector2.zero;
-        confirmButton.gameObject.SetActive(false);
-    }
 
     void Update()
     {
@@ -112,32 +90,50 @@ public class ARPlacementManager : MonoBehaviour
             MoveObject();
         }
 
-        if (aRModel.transform.position != aRModelInitialPosition && displayCount == 0 && moveGuidePanel.transform.localScale != Vector3.zero)
+        if (aRModel.transform.position != aRModelInitialPosition && displayCount == 0 && moveGuidePanel.gameObject.activeInHierarchy == true)
         {
-            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(0, 0), 0.5f).setEaseInBack().setDelay(0.5f);
-            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(1, 1), 0.5f).setEaseOutBack().setDelay(1.5f);
+            moveGuidePanel.gameObject.SetActive(false);
+
+            StopAllCoroutines();
+            StartCoroutine(PlayPinchGuidePanelAnimation());
+
             displayCount = 1;
         } 
-        else if (aRModel.transform.localScale != aRModelInitialScale && displayCount == 1 && moveGuidePanel.transform.localScale == Vector3.zero)
+        else if (aRModel.transform.localScale != aRModelInitialScale && displayCount == 1 && pinchGuidePanel.gameObject.activeInHierarchy == true)
         {
-            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(0, 0), 0.5f).setEaseInBack().setDelay(0.5f);
+            pinchGuidePanel.gameObject.SetActive(false);
+
+            StopAllCoroutines();
+            confirmButton.gameObject.SetActive(true);
+            LeanTween.scale(confirmButton.gameObject, new Vector3(1.25f, 1.25f, 1.25f), 1.0f).setEaseInOutSine().setLoopPingPong();
+
             displayCount = 2;
         }
-        else if (displayCount == 2 && pinchGuidePanel.transform.localScale == Vector3.zero)
+        else if (displayCount == 2 && pinchGuidePanel.gameObject.activeInHierarchy == false)
         {
-            LeanTween.scale(confirmGuidePanel.gameObject, new Vector2(1, 1), 0.1f).setEaseOutBack();
+            LeanTween.scale(confirmGuidePanel.gameObject, new Vector2(1, 1), 0.1f).setEaseOutBack().setDelay(1.5f);
             displayCount = 3;
         }
 
-        if (aRModel.transform.localScale.x > maxScale.x)
-        {
-            aRModel.transform.localScale = maxScale;
-        }
-        else if (aRModel.transform.localScale.x < minScale.x)
-        {
-            aRModel.transform.localScale = minScale;
-        }
+        ConstraintARModelScale();
     }
+
+    IEnumerator PlayMoveGuidePanelAnimation()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        moveGuidePanel.gameObject.SetActive(true);
+        LeanTween.moveLocalX(moveGuidePanel.gameObject, -200f, 2.0f).setEaseInOutSine().setLoopPingPong();
+    }
+
+    IEnumerator PlayPinchGuidePanelAnimation()
+    {
+        yield return new WaitForSeconds(1.0f);
+
+        pinchGuidePanel.gameObject.SetActive(true);
+        LeanTween.rotateAroundLocal(pinchGuidePanel.transform.GetChild(1).gameObject, new Vector3(0, 0, 1), 90f, 2.0f).setEaseInOutSine().setLoopPingPong().setDelay(1.0f);
+    }
+
 
     private void PlaceObject()
     {
@@ -152,8 +148,9 @@ public class ARPlacementManager : MonoBehaviour
                 aRModelInitialScale = aRModel.transform.localScale;
 
                 movePhoneImage.gameObject.SetActive(false);
-                LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.5f).setEaseOutBack().setDelay(1.0f);
-                confirmButton.gameObject.SetActive(true);
+
+                StopAllCoroutines();
+                StartCoroutine(PlayMoveGuidePanelAnimation());
             }
         }
         else
@@ -188,6 +185,41 @@ public class ARPlacementManager : MonoBehaviour
             }
         }
         
+    }
+
+    private void ConstraintARModelScale()
+    {
+        if (aRModel.transform.localScale.x > maxScale.x)
+        {
+            aRModel.transform.localScale = maxScale;
+        }
+        else if (aRModel.transform.localScale.x < minScale.x)
+        {
+            aRModel.transform.localScale = minScale;
+        }
+    }
+
+    private void PlayMovePhoneImageAnimation()
+    {
+        LeanTween.scale(movePhoneImage.gameObject, new Vector3(1.5f, 1.5f, 1.5f), 1.0f).setEaseInOutSine().setLoopPingPong();
+    }
+
+    public void RestartUIFlow()
+    {
+        displayCount = 0;
+        aRModelInitialPosition = Vector3.zero;
+        aRModelInitialScale = Vector3.zero;
+
+        aRModel.transform.Find("MoveIndicator").gameObject.SetActive(true);
+
+        pointCloudManager.SetTrackablesActive(true);
+        pointCloudManager.enabled = true;
+
+        movePhoneImage.gameObject.SetActive(true);
+        moveGuidePanel.gameObject.SetActive(false);
+        pinchGuidePanel.gameObject.SetActive(false);
+        confirmGuidePanel.gameObject.transform.localScale = Vector2.zero;
+        confirmButton.gameObject.SetActive(false);
     }
 
     private void CloseConfirmGuidePanel ()
