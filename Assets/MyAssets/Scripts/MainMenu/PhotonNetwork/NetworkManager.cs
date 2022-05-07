@@ -20,7 +20,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     string gameVersion = "1";
 
-    CanvasManager canvasManager;
+    public CanvasManager canvasManager;
     ExceptionMessageBoxHandler exceptionMessageBoxHandler;
 
     /// <summary>
@@ -42,7 +42,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         canvasManager = GameObject.Find("/Canvas").GetComponent<CanvasManager>();
-        exceptionMessageBoxHandler = GameObject.Find("/Canvas/MessagePage").GetComponent<ExceptionMessageBoxHandler>();
+        exceptionMessageBoxHandler = GameObject.Find("/SecondCanvas/MessagePage").GetComponent<ExceptionMessageBoxHandler>();
+        PhotonNetwork.NickName = AuthManager.Instance.user.DisplayName;
 
         Connect();
     }
@@ -116,7 +117,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     public void CreateARRoom(string roomName)
-    {
+    {  
+        MainManager.Instance.roomName = roomName;
         Debug.Log("PUN/NetworkManager: Create Room with name " + roomName);
         PhotonNetwork.CreateRoom(roomName, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
     }

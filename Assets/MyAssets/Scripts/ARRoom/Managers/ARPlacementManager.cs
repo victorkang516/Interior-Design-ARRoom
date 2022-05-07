@@ -81,15 +81,58 @@ public class ARPlacementManager : MonoBehaviour
     void Update()
     {
         
-        if (aRModel.activeInHierarchy == false)
-        {
-            PlaceObject();
-        }
+        if (IfARModelNotActiveInHierachy())
+            PlaceARModel();
         else
-        {
-            MoveObject();
-        }
+            MoveARModel();
 
+        HandleGuidanceUIAnimation();
+
+        ConstraintARModelScale();
+    }
+
+    private bool IfARModelNotActiveInHierachy() => aRModel.activeInHierarchy == false;
+
+    private void PlaceARModel()
+    {
+        if (Camera.current != null)
+        {
+            if (raycastManager.Raycast(Camera.current.ViewportPointToRay(viewportCenter), hits))
+            {
+                aRModel.SetActive(true);
+                aRModel.transform.position = hits[0].pose.position;
+
+                aRModelInitialPosition = aRModel.transform.position;
+                aRModelInitialScale = aRModel.transform.localScale;
+
+                movePhoneImage.gameObject.SetActive(false);
+
+                StopAllCoroutines();
+                StartCoroutine(PlayMoveGuidePanelAnimation());
+            }
+        }
+    }
+
+    private void MoveARModel()
+    {
+
+        if (IsPointerOverUIObject())
+            return;
+
+        if (Input.touchCount == 1)
+        {
+            if (raycastManager.Raycast(Input.GetTouch(0).position, hits))
+            {
+                if (Input.GetTouch(0).phase == TouchPhase.Moved && aRModel != null)
+                    aRModel.transform.position = hits[0].pose.position;
+                if (Input.GetTouch(0).phase == TouchPhase.Ended)
+                    aRModel.transform.position = hits[0].pose.position;
+            }
+        }
+    }
+
+    private void HandleGuidanceUIAnimation()
+    {
         if (aRModel.transform.position != aRModelInitialPosition && displayCount == 0 && moveGuidePanel.gameObject.activeInHierarchy == true)
         {
             moveGuidePanel.gameObject.SetActive(false);
@@ -98,7 +141,7 @@ public class ARPlacementManager : MonoBehaviour
             StartCoroutine(PlayPinchGuidePanelAnimation());
 
             displayCount = 1;
-        } 
+        }
         else if (aRModel.transform.localScale != aRModelInitialScale && displayCount == 1 && pinchGuidePanel.gameObject.activeInHierarchy == true)
         {
             pinchGuidePanel.gameObject.SetActive(false);
@@ -114,8 +157,6 @@ public class ARPlacementManager : MonoBehaviour
             LeanTween.scale(confirmGuidePanel.gameObject, new Vector2(1, 1), 0.1f).setEaseOutBack().setDelay(1.5f);
             displayCount = 3;
         }
-
-        ConstraintARModelScale();
     }
 
     IEnumerator PlayMoveGuidePanelAnimation()
@@ -133,59 +174,7 @@ public class ARPlacementManager : MonoBehaviour
         pinchGuidePanel.gameObject.SetActive(true);
         LeanTween.rotateAroundLocal(pinchGuidePanel.transform.GetChild(1).gameObject, new Vector3(0, 0, 1), 90f, 2.0f).setEaseInOutSine().setLoopPingPong().setDelay(1.0f);
     }
-
-
-    private void PlaceObject()
-    {
-        if(Camera.current != null)
-        {
-            if (raycastManager.Raycast(Camera.current.ViewportPointToRay(viewportCenter), hits))
-            {
-                aRModel.SetActive(true);
-                aRModel.transform.position = hits[0].pose.position;
-
-                aRModelInitialPosition = aRModel.transform.position;
-                aRModelInitialScale = aRModel.transform.localScale;
-
-                movePhoneImage.gameObject.SetActive(false);
-
-                StopAllCoroutines();
-                StartCoroutine(PlayMoveGuidePanelAnimation());
-            }
-        }
-        else
-        {
-            //Debug1("ARPlacementManager:PlaceObject(): No current camera found");
-        }
-    }
-
-    private void MoveObject()
-    {
-        
-        if (IsPointerOverUIObject())
-            return;
-
-        if (Input.touchCount == 1)
-        {
-            if (raycastManager.Raycast(Input.GetTouch(0).position, hits))
-            {
-
-                if (Input.GetTouch(0).phase == TouchPhase.Began)
-                {
-                    //aRModel.transform.position = hits[0].pose.position;
-                }
-                else if (Input.GetTouch(0).phase == TouchPhase.Moved && aRModel != null)
-                {
-                    aRModel.transform.position = hits[0].pose.position;
-                }
-                if (Input.GetTouch(0).phase == TouchPhase.Ended)
-                {
-                    aRModel.transform.position = hits[0].pose.position;
-                }
-            }
-        }
-        
-    }
+    
 
     private void ConstraintARModelScale()
     {

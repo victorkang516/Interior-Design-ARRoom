@@ -81,14 +81,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     void RefreshRoomPanelList()
     {
-        foreach (Transform child in roomPanel.transform.GetChild(0).GetChild(0))
+        foreach (Transform child in roomPanel.transform.GetChild(1).GetChild(0))
         {
             Destroy(child.gameObject);
         }
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            GameObject roomMemberItem = Instantiate(roomMemberItemPrefab, roomPanel.transform.GetChild(0).GetChild(0));
+            GameObject roomMemberItem = Instantiate(roomMemberItemPrefab, roomPanel.transform.GetChild(1).GetChild(0));
             roomMemberItem.transform.GetChild(0).GetComponent<Text>().text = player.NickName;
             roomMemberItem.name = player.NickName;
         }

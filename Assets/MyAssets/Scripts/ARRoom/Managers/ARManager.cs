@@ -11,11 +11,21 @@ public class ARManager : MonoBehaviour
     ARSession aRSession;
     ARPlacementManager aRPlacementManager;
     ARModificationManager aRModificationManager;
+    LoadSaveManager loadSaveManager;
+
 
     public GameObject aRModel;
     ARModel selectedARModel;
 
+
+    // Options
+    Button optionButton;
+    GameObject optionPanel;
+
+    Button saveButton;
     Button resetButton;
+
+
     GameObject floorTriggerPanel;
 
     bool isFirstTime = true;
@@ -27,16 +37,27 @@ public class ARManager : MonoBehaviour
 
         aRPlacementManager = transform.Find("ARPlacementMode").gameObject.GetComponent<ARPlacementManager>();
         aRModificationManager = transform.Find("ARModificationMode").gameObject.GetComponent<ARModificationManager>();
+        loadSaveManager = GameObject.Find("LoadSaveManager").GetComponent<LoadSaveManager>();
 
-        resetButton = GameObject.Find("/Canvas/ARBasicMode/TopLeftPanel/ResetButton").GetComponent<Button>();
+        optionButton = GameObject.Find("OptionButton").GetComponent<Button>();
+        optionButton.onClick.AddListener(ShowOptionPanel);
+
+        saveButton = GameObject.Find("SaveButton").GetComponent<Button>();
+        saveButton.onClick.AddListener(SaveData);
+
+        resetButton = GameObject.Find("ResetButton").GetComponent<Button>();
         resetButton.onClick.AddListener(ResetARSession);
+
+        optionPanel = GameObject.Find("OptionPanel");
+        optionPanel.transform.localScale = Vector2.zero;
+        
 
         floorTriggerPanel = GameObject.Find("/Canvas/ARModificationMode/FloorTriggerPanel");
     }
 
     private void Update()
     {
-        if (isFirstTime && aRModificationManager.gameObject.activeInHierarchy && aRPlacementManager.gameObject.activeInHierarchy && MainManager.Instance.selectedARModelPrefab != null)
+        if (isFirstTime && CheckAllManagersAreReady() && CheckSelectedARModelPrefabIsExist() )
         {
             selectedARModel = MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>();
 
@@ -48,30 +69,46 @@ public class ARManager : MonoBehaviour
         }
     }
 
+    private bool CheckAllManagersAreReady () => 
+        aRModificationManager.gameObject.activeInHierarchy && aRPlacementManager.gameObject.activeInHierarchy;
+    private bool CheckSelectedARModelPrefabIsExist () =>  MainManager.Instance.selectedARModelPrefab != null;
+
     private void InitializeUI()
     {
         if (selectedARModel.modelType == ModelType.Studio)
-        {
             floorTriggerPanel.SetActive(false);
-        }
         else if (selectedARModel.modelType == ModelType.Loft)
-        {
             floorTriggerPanel.SetActive(true);
-        }
     }
 
     private void InitializeManagers()
     {
-        SetActiveARPlacementMode(true);
+        SetActiveARPlacementMode(false);
         SetActiveARModificationMode(false);
     }
 
     private void InitializeARModel()
     {
-        
-        aRModel = Instantiate(selectedARModel.gameObject, new Vector3(0, 0, 0), selectedARModel.gameObject.transform.rotation);
-        
+        if (CheckIfRoomKeyExist())
+        {
+            loadSaveManager.LoadData();
+        }
+        else
+        {
+            aRModel = Instantiate(selectedARModel.gameObject, Vector3.zero, 
+                selectedARModel.gameObject.transform.rotation);
+            AssignARModelToManagers();
+            aRModel.SetActive(false);
+        }
+    }
+
+    private bool CheckIfRoomKeyExist() => MainManager.Instance.roomKey != "";
+
+
+    public void AssignARModelToManagers ()
+    {
         aRPlacementManager.aRModel = aRModel;
+        loadSaveManager.aRModel = aRModel;
 
         if (selectedARModel.modelType == ModelType.Loft)
         {
@@ -81,8 +118,9 @@ public class ARManager : MonoBehaviour
         aRModificationManager.middleWallList = FindObjectsOfType<MiddleWall>();
         aRModificationManager.upperWallList = FindObjectsOfType<UpperWall>();
 
-        aRModel.SetActive(false);
+        SetActiveARPlacementMode(true);
     }
+
 
     public void SetActiveARPlacementMode (bool isActive)
     {
@@ -92,6 +130,19 @@ public class ARManager : MonoBehaviour
     public void SetActiveARModificationMode (bool isActive)
     {
         aRModificationManager.gameObject.SetActive(isActive);
+    }
+
+
+    private void ShowOptionPanel()
+    {
+        optionPanel.GetComponent<OptionPanelHandler>().Show();
+    }
+
+    private void SaveData ()
+    {
+        if (aRModel.activeInHierarchy)
+            loadSaveManager.SaveData();
+        optionPanel.GetComponent<OptionPanelHandler>().ActionDone();
     }
 
 

@@ -110,6 +110,9 @@ public class ARModificationManager : MonoBehaviour
         if (playerManager.myCurrentSelectedObject == null)
             return;
 
+        if (playerManager.myCurrentSelectedObject.CompareTag("Paint") || playerManager.myCurrentSelectedObject.CompareTag("Floor"))
+            return;
+
         ConstraintObjectYPosition();
     }
 
@@ -236,39 +239,43 @@ public class ARModificationManager : MonoBehaviour
 
     public void ShowObjectListPanel(GameObject myCurrentSelectedObject)
     {
-        if (!myCurrentSelectedObject.CompareTag("Toilet") && !myCurrentSelectedObject.CompareTag("Shower"))
-        {
-            LeanTween.scale(objectListPanel.gameObject, new Vector2(1, 1), 0.25f).setEaseInOutQuart();
-            objectListHandler.CreateObjectList(myCurrentSelectedObject);
-        }
+        if (IfItIsToiletOrShower(myCurrentSelectedObject))
+            return;
+
+        LeanTween.scale(objectListPanel.gameObject, new Vector2(1, 1), 0.25f).setEaseInOutQuart();
+        objectListHandler.CreateObjectList(myCurrentSelectedObject);
     }
 
     public void HideObjectListPanel(GameObject myCurrentSelectedObject)
     {
-        if (!myCurrentSelectedObject.CompareTag("Toilet") && !myCurrentSelectedObject.CompareTag("Shower"))
-        {
-            LeanTween.scale(objectListPanel.gameObject, new Vector2(0, 1), 0.25f).setEaseInOutQuart();
-            objectListHandler.EmptyObjectList();
-        }
+        if (IfItIsToiletOrShower(myCurrentSelectedObject))
+            return;
+
+        LeanTween.scale(objectListPanel.gameObject, new Vector2(0, 1), 0.25f).setEaseInOutQuart();
+        objectListHandler.EmptyObjectList();
     }
 
     public void ShowGuidePanels(GameObject myCurrentSelectedObject)
     {
-        if (!myCurrentSelectedObject.CompareTag("Paint") && !myCurrentSelectedObject.CompareTag("Floor"))
-        {
-            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.25f).setEaseOutBack();
-            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(1, 1), 0.25f).setEaseOutBack();
-        }
+        if (IfItIsPaintOrFloor(myCurrentSelectedObject))
+            return;
+
+        LeanTween.scale(moveGuidePanel.gameObject, new Vector2(1, 1), 0.25f).setEaseOutBack();
+        LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(1, 1), 0.25f).setEaseOutBack();
     }
 
     public void HideGuidePanels(GameObject myCurrentSelectedObject)
     {
-        if (!myCurrentSelectedObject.CompareTag("Paint") && !myCurrentSelectedObject.CompareTag("Floor"))
-        {
-            LeanTween.scale(moveGuidePanel.gameObject, new Vector2(0, 0), 0.25f).setEaseInBack();
-            LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(0, 0), 0.25f).setEaseInBack();
-        }
+        if (IfItIsPaintOrFloor(myCurrentSelectedObject))
+            return;
+
+        LeanTween.scale(moveGuidePanel.gameObject, new Vector2(0, 0), 0.25f).setEaseInBack();
+        LeanTween.scale(pinchGuidePanel.gameObject, new Vector2(0, 0), 0.25f).setEaseInBack();
     }
+
+    private bool IfItIsToiletOrShower(GameObject myCurrentSelectedObject) => myCurrentSelectedObject.CompareTag("Toilet") || myCurrentSelectedObject.CompareTag("Shower");
+    private bool IfItIsPaintOrFloor(GameObject myCurrentSelectedObject) => myCurrentSelectedObject.CompareTag("Paint") || myCurrentSelectedObject.CompareTag("Floor");
+
 
     private void CloseModificationGuidePanel()
     {
@@ -286,7 +293,6 @@ public class ARModificationManager : MonoBehaviour
     {
         yBoundary = leanSelectable.gameObject.transform.position.y;
 
-        //playerManager.myCurrentSelectedObject = leanSelectable.gameObject;
         playerManager.EmitSelectObject(leanSelectable.gameObject);
 
         ShowObjectListPanel(leanSelectable.gameObject);

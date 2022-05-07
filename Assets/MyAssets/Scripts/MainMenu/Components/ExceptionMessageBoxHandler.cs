@@ -12,7 +12,6 @@ public class ExceptionMessageBoxHandler : MonoBehaviour
     void Start()
     {
         messageText = transform.Find("MessageBox/MessageText").GetComponent<Text>();
-        Debug.Log("MessageHandler: messageText");
 
         closeButton = transform.Find("MessageBox/CloseButton").GetComponent<Button>();
         closeButton.onClick.AddListener(CloseMessagePage);
@@ -25,7 +24,6 @@ public class ExceptionMessageBoxHandler : MonoBehaviour
             gameObject.SetActive(false);
             onFirstTime = false;
         }
-            
     }
 
     public void DisplayMessage (string message)

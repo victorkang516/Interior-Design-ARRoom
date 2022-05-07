@@ -88,7 +88,10 @@ public class NewARRoomUIHandler : MonoBehaviour
     void CreateARRoom ()
     {
         if (roomNameInputField.text.Length > 0)
+        {
+            MainManager.Instance.roomName = "";
             networkManager.CreateARRoom(roomNameInputField.text);
+        }
         else
         {
             warningSign.GetComponent<WarningSignHandler>().Show();

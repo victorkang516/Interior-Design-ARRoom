@@ -21,7 +21,11 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    public bool firstTime = true;
+
     [SerializeField] public GameObject[] aRModelPrefabs;
     [HideInInspector] public GameObject selectedARModelPrefab;
+    public string roomName;
+    public string roomKey = "";
 
 }

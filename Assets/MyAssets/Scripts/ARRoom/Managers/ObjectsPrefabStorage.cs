@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectsPrefabStorage : MonoBehaviour
 {
+
     #region Furniture Prefabs
 
     [SerializeField]
@@ -51,4 +52,12 @@ public class ObjectsPrefabStorage : MonoBehaviour
 
     #endregion
 
+
+    #region
+
+    public Material[] roomPaintMaterials;
+
+    public Material[] roomFloorMaterials;
+
+    #endregion
 }

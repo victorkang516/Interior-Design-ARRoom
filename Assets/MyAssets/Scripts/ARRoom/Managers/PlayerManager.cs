@@ -61,21 +61,52 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (photonView.IsMine)
         {
-            if (CheckIfTheARModelExistAndARModelIsActiveInHierarchy() && Lean.Touch.LeanTouch.Fingers.Count == 2)
+            if (CheckIfTheARModelExistAndARModelIsActiveInHierarchy() && 
+                Lean.Touch.LeanTouch.Fingers.Count == 2)
             {
                 if (CheckIfThisPlayerRotateOrScalingTheARModel())
-                    EmitRotateAndScaleTheARModel(aRManager.aRModel.transform.rotation, aRManager.aRModel.transform.localScale);
+                    EmitRotateAndScaleTheARModel(aRManager.aRModel.transform.rotation, 
+                        aRManager.aRModel.transform.localScale);
             }
 
-            if (myCurrentSelectedObject != null)
+            if (myCurrentSelectedObject != null && NotPaintOrFloor())
             {
                 if (CheckIfThisPlayerMovingTheObject())
-                    EmitMoveTheObject(myCurrentSelectedObject.transform.position - previousPosition);
+                    EmitMoveTheObject(myCurrentSelectedObject.transform.position 
+                        - previousPosition);
 
                 if (CheckIfThisPlayerRotatingTheObject())
                     EmitRotateTheObject(myCurrentSelectedObject.transform.rotation);
             }
         }
+    }
+
+    private bool NotPaintOrFloor() => !myCurrentSelectedObject.CompareTag("Paint") && !myCurrentSelectedObject.CompareTag("Floor");
+
+    bool CheckIfTheARModelExistAndARModelIsActiveInHierarchy()
+    {
+        if (aRManager.aRModel != null)
+        {
+            if (aRManager.aRModel.activeInHierarchy)
+                return true;
+        }
+
+        return false;
+    }
+
+    bool CheckIfThisPlayerRotateOrScalingTheARModel()
+    {
+        return previousModelRotation != aRManager.aRModel.transform.rotation || previousModelScaling != aRManager.aRModel.transform.localScale;
+    }
+
+    bool CheckIfThisPlayerMovingTheObject()
+    {
+        return previousPosition != myCurrentSelectedObject.transform.position && Lean.Touch.LeanTouch.Fingers.Count == 1;
+    }
+
+    bool CheckIfThisPlayerRotatingTheObject()
+    {
+        return previousRotation != myCurrentSelectedObject.transform.rotation && Lean.Touch.LeanTouch.Fingers.Count == 2;
     }
 
     #endregion
@@ -94,26 +125,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         {
             //Debug.Log("NetworkManager: Receiving");
         }
-    }
-
-    bool CheckIfTheARModelExistAndARModelIsActiveInHierarchy ()
-    {
-        return aRManager.aRModel.activeInHierarchy && aRManager.aRModel != null;
-    }
-
-    bool CheckIfThisPlayerRotateOrScalingTheARModel ()
-    {
-        return previousModelRotation != aRManager.aRModel.transform.rotation || previousModelScaling != aRManager.aRModel.transform.localScale;
-    }
-
-    bool CheckIfThisPlayerMovingTheObject()
-    {
-        return previousPosition != myCurrentSelectedObject.transform.position && Lean.Touch.LeanTouch.Fingers.Count == 1;
-    }
-
-    bool CheckIfThisPlayerRotatingTheObject()
-    {
-        return previousRotation != myCurrentSelectedObject.transform.rotation && Lean.Touch.LeanTouch.Fingers.Count == 2;
     }
 
 
@@ -217,7 +228,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
         Vector3 myCurrentObjectPosition = myCurrentSelectedObject.transform.position;
 
-        myCurrentSelectedObject.transform.position = new Vector3(myCurrentObjectPosition.x + travelDistance.x, myCurrentObjectPosition.y, myCurrentObjectPosition.z + travelDistance.z);
+        myCurrentSelectedObject.transform.position = new Vector3(
+            myCurrentObjectPosition.x + travelDistance.x, 
+            myCurrentObjectPosition.y, 
+            myCurrentObjectPosition.z + travelDistance.z);
     }
 
     [PunRPC]
@@ -277,10 +291,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
                 ReplaceObjectWith(objectsPrefabStorage.washbasinPrefabs[itemIndex]);
                 break;
             case "Paint":
-                ReplacePaintWith(objectsPrefabStorage.paintMaterials[itemIndex].GetComponent<Renderer>().material);
+                ReplacePaintWith(objectsPrefabStorage.paintMaterials[itemIndex].GetComponent<Renderer>().material, objectsPrefabStorage.paintMaterials[itemIndex].GetComponent<ARObject>().ObjectName);
                 break;
             case "Floor":
-                ReplaceFloorWith(objectsPrefabStorage.floorMaterials[itemIndex].GetComponent<Renderer>().material);
+                ReplaceFloorWith(objectsPrefabStorage.floorMaterials[itemIndex].GetComponent<Renderer>().material, objectsPrefabStorage.floorMaterials[itemIndex].GetComponent<ARObject>().ObjectName);
                 break;
         }
     }
@@ -293,7 +307,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(myCurrentSelectedObject);
     }
 
-    private void ReplacePaintWith(Material material)
+    private void ReplacePaintWith(Material material, string materialName)
     {
         GameObject room = myCurrentSelectedObject.transform.parent.gameObject;
         foreach (Transform wall in room.transform)
@@ -304,15 +318,19 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
                 wallPaint.GetComponent<Renderer>().material = material;
             }
         }
+
+        room.GetComponent<RoomPaint>().materialName = materialName;
     }
 
-    private void ReplaceFloorWith(Material material)
+    private void ReplaceFloorWith(Material material, string materialName)
     {
         GameObject room = myCurrentSelectedObject.transform.parent.gameObject;
         foreach (Transform floor in room.transform)
         {
             floor.GetComponent<Renderer>().material = material;
         }
+
+        room.GetComponent<RoomFloor>().materialName = materialName;
     }
 
     [PunRPC]

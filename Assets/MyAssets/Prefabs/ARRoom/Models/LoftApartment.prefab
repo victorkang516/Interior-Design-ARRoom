@@ -924,7 +924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5257380019841427432}
   m_Layer: 0
-  m_Name: Room3
+  m_Name: Room4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1470,7 +1470,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6946006516134407196}
-  m_LocalRotation: {x: 0, y: 0.9848078, z: 0, w: 0.17364825}
+  m_LocalRotation: {x: 0, y: 0.98495895, z: 0, w: 0.17278875}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
@@ -1480,7 +1480,7 @@ Transform:
   - {fileID: 6345016659807302782}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 160, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 160.1, z: 0}
 --- !u!114 &-7099056667549207174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1677,7 +1677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4711151956777554157}
   m_Layer: 0
-  m_Name: Room4
+  m_Name: Room2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1779,7 +1779,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7852636610415308174}
   m_Layer: 0
-  m_Name: Room2
+  m_Name: Room3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2260,7 +2260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint04
+      value: Paint14
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3164,7 +3164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint03 (2)
+      value: Paint37
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3820,7 +3820,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint03 (2)
+      value: Paint24
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5092,7 +5092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint06
+      value: Paint22
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5607,7 +5607,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint06
+      value: Paint32
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5772,7 +5772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint05
+      value: Paint41
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5948,7 +5948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint03
+      value: Paint31
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6276,7 +6276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint01
+      value: Paint11
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6374,7 +6374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint10
+      value: Paint33
       objectReference: {fileID: 0}
     - target: {fileID: 8568520590010946757, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_LocalScale.x
@@ -6703,7 +6703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint12
+      value: Paint42
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6793,7 +6793,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint17
+      value: Paint44
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6887,7 +6887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint16
+      value: Paint35
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6985,7 +6985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint02
+      value: Paint12
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -7220,7 +7220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint14
+      value: Paint34
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -7318,7 +7318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint13
+      value: Paint43
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -7428,7 +7428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint03
+      value: Paint13
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -7891,7 +7891,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint03 (1)
+      value: Paint23
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -7993,7 +7993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint03
+      value: Paint21
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -8478,7 +8478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983065030917936279, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Name
-      value: Paint03 (1)
+      value: Paint36
       objectReference: {fileID: 0}
     - target: {fileID: 8220987103874081357, guid: 17e5023ec80bc324b92b23305dccf479, type: 3}
       propertyPath: m_Materials.Array.data[0]

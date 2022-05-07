@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "29382781217",
+    "firebase_url": "https://idar-e9cd5-default-rtdb.firebaseio.com",
+    "project_id": "idar-e9cd5",
+    "storage_bucket": "idar-e9cd5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29382781217:android:93532ce30c2aa46548b660",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.InteriorDesignARRoom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29382781217-2e93hbp5b2m7dbn3368gdgkec1ugfaka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyM1DYuXXf7KpEO5SKB8dOVMqPvz-_OzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29382781217-2e93hbp5b2m7dbn3368gdgkec1ugfaka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

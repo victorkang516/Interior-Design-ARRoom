@@ -11,7 +11,8 @@ public enum CanvasType {
     NewARRoom,
     LoadARRoom,
     JoinARRoom,
-    Loading
+    Loading,
+    Guide
 }
 
 public class CanvasManager : MonoBehaviour
@@ -22,9 +23,11 @@ public class CanvasManager : MonoBehaviour
     private void Awake()
     {
         canvasControllerList = gameObject.GetComponentsInChildren<CanvasController>().ToList();
-        canvasControllerList.ForEach( canvasController => canvasController.gameObject.SetActive(false));
+        canvasControllerList.ForEach( 
+            canvasController => canvasController.gameObject.SetActive(false));
 
-        CanvasController initialCanvasController = canvasControllerList.Find(canvasController => canvasController.canvasType == CanvasType.Login);
+        CanvasController initialCanvasController = canvasControllerList.Find(
+            canvasController => canvasController.canvasType == CanvasType.Login);
         if (initialCanvasController != null)
         {
             initialCanvasController.gameObject.SetActive(true);
@@ -32,7 +35,9 @@ public class CanvasManager : MonoBehaviour
         } 
         else
         {
-            initialCanvasController = canvasControllerList.Find(canvasController => canvasController.canvasType == CanvasType.Home);
+            
+            initialCanvasController = canvasControllerList.Find(
+            canvasController => canvasController.canvasType == CanvasType.Home);
             initialCanvasController.gameObject.SetActive(true);
             lastActiveCanvas = initialCanvasController;
 
@@ -41,7 +46,8 @@ public class CanvasManager : MonoBehaviour
 
     public void SwitchCanvas(CanvasType desiredType)
     {
-        CanvasController desiredCanvas = canvasControllerList.Find(canvas => canvas.canvasType == desiredType);
+        CanvasController desiredCanvas = canvasControllerList.Find(
+            canvas => canvas.canvasType == desiredType);
         if (desiredCanvas != null)
         {
             desiredCanvas.gameObject.SetActive(true);
