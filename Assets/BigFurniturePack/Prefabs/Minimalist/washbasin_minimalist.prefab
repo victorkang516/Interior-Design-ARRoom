@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9ef60bdc624a1594e89bdc4d48adc8da, type: 2}
+  - {fileID: 2100000, guid: 0bcdafabdea0a864da973a502dd7433c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -788,7 +788,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 19eb23746ccb5ac4e930f4337645fbf8, type: 2}
+  - {fileID: 2100000, guid: 033ec4921329dac4f9580a3cf0e938b5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -952,7 +952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc21cc8dd178efd4ca452fe916fcad2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectName: Washbasin 1
+  ObjectName: Minimalist Washbasin
   Thumbnail: {fileID: 21300000, guid: d983af116675e634f9aebbc50900d750, type: 3}
 --- !u!114 &5181679756708851313
 MonoBehaviour:

@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObjectName: Black Tile
-  Thumbnail: {fileID: 21300000, guid: 3bd9abb134c8df44d928f22702b7656c, type: 3}
+  Thumbnail: {fileID: 21300000, guid: 23dfe734c77564a45a604b84412101c3, type: 3}
 --- !u!23 &7526218397364689819
 MeshRenderer:
   m_ObjectHideFlags: 0
