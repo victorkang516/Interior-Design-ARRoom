@@ -54,11 +54,13 @@ public class RoomPaintData
 {
     public string gameObjectName;
     public string materialName;
+    public string whichFloor;
 
-    public RoomPaintData(string gameObjectName, string materialName)
+    public RoomPaintData(string gameObjectName, string materialName, string whichFloor)
     {
         this.gameObjectName = gameObjectName;
         this.materialName = materialName;
+        this.whichFloor = whichFloor;
     }
 }
 
@@ -66,11 +68,13 @@ public class RoomFloorData
 {
     public string gameObjectName;
     public string materialName;
+    public string whichFloor;
 
-    public RoomFloorData(string gameObjectName, string materialName)
+    public RoomFloorData(string gameObjectName, string materialName, string whichFloor)
     {
         this.gameObjectName = gameObjectName;
         this.materialName = materialName;
+        this.whichFloor = whichFloor;
     }
 }
 
@@ -256,16 +260,34 @@ public class LoadSaveManager : MonoBehaviour
         else if (aRObject.transform.parent.parent.name == "FirstFloor")
             whichFloor = "FirstFloor";
 
-        ARDataObject aRDataObject = new ARDataObject(aRObjectType, aRObject.gameObject.name, aRObject.GetComponent<ARObject>().ObjectName, whichFloor, aRObject.transform.position - aRModel.transform.position, aRObject.transform);
+        ARDataObject aRDataObject = new ARDataObject(
+            aRObjectType, 
+            aRObject.gameObject.name, 
+            aRObject.GetComponent<ARObject>().ObjectName, 
+            whichFloor, 
+            aRObject.transform.position - aRModel.transform.position, 
+            aRObject.transform
+            );
 
         string json = JsonUtility.ToJson(aRDataObject);
 
-        mDatabaseRef.Child("users").Child(AuthManager.Instance.user.UserId).Child("rooms").Child(MainManager.Instance.roomKey).Child("furnitures").Push().SetRawJsonValueAsync(json);
+        mDatabaseRef.Child("users")
+            .Child(AuthManager.Instance.user.UserId)
+            .Child("rooms")
+            .Child(MainManager.Instance.roomKey)
+            .Child("furnitures").Push().SetRawJsonValueAsync(json);
     }
 
     void SaveThisRoomPaintData (RoomPaint roomPaint)
     {
-        RoomPaintData roomPaintData = new RoomPaintData(roomPaint.gameObject.name, roomPaint.materialName);
+        string whichFloor = "GroundFloor";
+
+        if (roomPaint.transform.parent.parent.name == "GroundFloor")
+            whichFloor = "GroundFloor";
+        else if (roomPaint.transform.parent.parent.name == "FirstFloor")
+            whichFloor = "FirstFloor";
+
+        RoomPaintData roomPaintData = new RoomPaintData(roomPaint.gameObject.name, roomPaint.materialName, whichFloor);
         string json = JsonUtility.ToJson(roomPaintData);
 
         mDatabaseRef.Child("users").Child(AuthManager.Instance.user.UserId).Child("rooms").Child(MainManager.Instance.roomKey).Child("roomPaints").Push().SetRawJsonValueAsync(json);
@@ -273,7 +295,14 @@ public class LoadSaveManager : MonoBehaviour
 
     void SaveThisRoomFloorData(RoomFloor roomFloor)
     {
-        RoomFloorData roomFloorData = new RoomFloorData(roomFloor.gameObject.name, roomFloor.materialName);
+        string whichFloor = "GroundFloor";
+
+        if (roomFloor.transform.parent.parent.name == "GroundFloor")
+            whichFloor = "GroundFloor";
+        else if (roomFloor.transform.parent.parent.name == "FirstFloor")
+            whichFloor = "FirstFloor";
+
+        RoomFloorData roomFloorData = new RoomFloorData(roomFloor.gameObject.name, roomFloor.materialName, whichFloor);
         string json = JsonUtility.ToJson(roomFloorData);
 
         mDatabaseRef.Child("users").Child(AuthManager.Instance.user.UserId).Child("rooms").Child(MainManager.Instance.roomKey).Child("roomFloors").Push().SetRawJsonValueAsync(json);
@@ -521,6 +550,7 @@ public class LoadSaveManager : MonoBehaviour
 
                   string gameObjectName = (string)dictRoomPaint["gameObjectName"];
                   string materialName = (string)dictRoomPaint["materialName"];
+                  string whichFloor = (string)dictRoomPaint["whichFloor"];
 
                   Debug.Log(gameObjectName + " " + materialName);
 
@@ -530,7 +560,7 @@ public class LoadSaveManager : MonoBehaviour
                       if (objectsPrefabStorage.paintMaterials[i].GetComponent<ARObject>().ObjectName == materialName)
                       {
                           Debug.Log(materialName);
-                          ReplacePaintWith(gameObjectName, objectsPrefabStorage.roomPaintMaterials[i], materialName);
+                          ReplacePaintWith(gameObjectName, objectsPrefabStorage.roomPaintMaterials[i], materialName, whichFloor);
                       }
                   }
               }
@@ -539,10 +569,15 @@ public class LoadSaveManager : MonoBehaviour
       });
     }
 
-    private void ReplacePaintWith(string gameObjectName, Material material, string materialName)
+    private void ReplacePaintWith(string gameObjectName, Material material, string materialName, string whichFloor)
     {
-        Debug.Log(material.name);
-        GameObject room = aRModel.transform.Find("GroundFloor/Paints/" + gameObjectName).gameObject;
+        string tranformHierachy = "";
+        if (whichFloor == "GroundFloor")
+            tranformHierachy = "GroundFloor/Paints/";
+        else if (whichFloor == "FirstFloor")
+            tranformHierachy = "FirstFloor/Paints/";
+
+        GameObject room = aRModel.transform.Find(tranformHierachy + gameObjectName).gameObject;
         if (room == null)
             Debug.Log("Room is null");
         foreach (Transform wall in room.transform)
@@ -578,6 +613,7 @@ public class LoadSaveManager : MonoBehaviour
 
                   string gameObjectName = (string)dictRoomFloor["gameObjectName"];
                   string materialName = (string)dictRoomFloor["materialName"];
+                  string whichFloor = (string)dictRoomFloor["whichFloor"];
 
                   Debug.Log(gameObjectName + " " + materialName);
 
@@ -586,7 +622,7 @@ public class LoadSaveManager : MonoBehaviour
                   {
                       if (objectsPrefabStorage.floorMaterials[i].GetComponent<ARObject>().ObjectName == materialName)
                       {
-                          ReplaceFloorWith(gameObjectName, objectsPrefabStorage.roomFloorMaterials[i], materialName);
+                          ReplaceFloorWith(gameObjectName, objectsPrefabStorage.roomFloorMaterials[i], materialName, whichFloor);
                       }
                   }
               }
@@ -595,9 +631,15 @@ public class LoadSaveManager : MonoBehaviour
       });
     }
 
-    private void ReplaceFloorWith(string gameObjectName, Material material, string materialName)
+    private void ReplaceFloorWith(string gameObjectName, Material material, string materialName, string whichFloor)
     {
-        GameObject room = aRModel.transform.Find("GroundFloor/Floors/" + gameObjectName).gameObject;
+        string tranformHierachy = "";
+        if (whichFloor == "GroundFloor")
+            tranformHierachy = "GroundFloor/Floors/";
+        else if (whichFloor == "FirstFloor")
+            tranformHierachy = "FirstFloor/Floors/";
+
+        GameObject room = aRModel.transform.Find(tranformHierachy + gameObjectName).gameObject;
         foreach (Transform floor in room.transform)
         {
             floor.GetComponent<Renderer>().material = material;

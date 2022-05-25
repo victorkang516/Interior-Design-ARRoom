@@ -89,7 +89,7 @@ public class NewARRoomUIHandler : MonoBehaviour
     {
         if (roomNameInputField.text.Length > 0)
         {
-            MainManager.Instance.roomName = "";
+            MainManager.Instance.roomKey = "";
             networkManager.CreateARRoom(roomNameInputField.text);
         }
         else

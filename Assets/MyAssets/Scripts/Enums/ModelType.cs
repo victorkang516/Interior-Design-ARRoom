@@ -1,5 +1,6 @@
 public enum ModelType
 {
     Studio,
-    Loft
+    Loft,
+    TwoBedroomUnit
 }

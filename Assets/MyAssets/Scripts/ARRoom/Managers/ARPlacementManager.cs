@@ -45,11 +45,15 @@ public class ARPlacementManager : MonoBehaviour
     Vector3 maxScale = new Vector3(2.0f, 2.0f, 2.0f);
     Vector3 minScale = new Vector3(0.2f, 0.2f, 0.2f);
 
+    //Text debugText1;
+
     #endregion
 
 
     void Start()
     {
+        //debugText1 = GameObject.Find("DebugText1").GetComponent<Text>();
+
         raycastManager = GameObject.Find("/AR Session Origin").gameObject.GetComponent<ARRaycastManager>();
         pointCloudManager = GameObject.Find("/AR Session Origin").gameObject.GetComponent<ARPointCloudManager>();
         aRManager = transform.GetComponentInParent<ARManager>();
@@ -80,7 +84,8 @@ public class ARPlacementManager : MonoBehaviour
 
     void Update()
     {
-        
+        //debugText1.text = Time.fixedTime + "ARPlacementManager: The arModel is " + aRModel.name;
+
         if (IfARModelNotActiveInHierachy())
             PlaceARModel();
         else

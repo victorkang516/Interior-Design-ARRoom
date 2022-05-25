@@ -105,16 +105,17 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         roomMessageBoxHandler.onPlayerJoined(other.NickName);
         RefreshRoomPanelList();
-
-        Debug.LogFormat("OnPlayerEnteredRoom() {0}", other.NickName); // not seen if you're the player connecting
         
         if (PhotonNetwork.IsMasterClient)
-            playerManager.EmitSyncWithHost(MainManager.Instance.selectedARModelPrefab.GetComponent<ARModel>().ModelName);
+            playerManager.EmitSyncWithHost(
+                MainManager.Instance.selectedARModelPrefab
+                .GetComponent<ARModel>().ModelName);
 
 
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
+            Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", 
+                PhotonNetwork.IsMasterClient);
         }
     }
 

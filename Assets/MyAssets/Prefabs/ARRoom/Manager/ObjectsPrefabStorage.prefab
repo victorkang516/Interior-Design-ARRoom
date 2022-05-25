@@ -46,41 +46,57 @@ MonoBehaviour:
   bedPrefabs:
   - {fileID: 100008, guid: a11d318bf37c01d489a19dc2dc33ed7d, type: 3}
   - {fileID: 100014, guid: b4bf5e3a00974a94ea1549814fc16ebf, type: 3}
+  - {fileID: 100008, guid: 9c3d4a6026f6efb43b083418e85ea569, type: 3}
+  - {fileID: 100014, guid: 5aa01f48c4a79254386179b0b82f0a08, type: 3}
+  - {fileID: 100008, guid: 0330c41c525738f4d97e48cbe8407fa4, type: 3}
+  - {fileID: 100008, guid: c12d734f5780a074b80065401d646832, type: 3}
   sofaPrefabs:
   - {fileID: 100002, guid: b75a9f5bde480c848a601653b942291a, type: 3}
   - {fileID: 100002, guid: 578f83cc4b6c9e643bdda64c44bc8aa2, type: 3}
+  - {fileID: 100016, guid: 76f69c2044293fc40a066ff85ecb70df, type: 3}
   rackPrefabs:
   - {fileID: 100000, guid: 51df288df6d8c864aae27c801a5fd8a5, type: 3}
   - {fileID: 100000, guid: eba637749b9fc5b40878fcdbc4ae8a62, type: 3}
+  - {fileID: 100000, guid: 148232a882f12ba43b47e916f1ef1d81, type: 3}
   cabinetPrefabs:
   - {fileID: 100000, guid: 2efb098e46ba3e44cae4f1ba84005732, type: 3}
   - {fileID: 100008, guid: df7f243bd429cd5408f1ad2978c21cec, type: 3}
+  - {fileID: 100000, guid: e2aed24f29ce4a24b92c50ba14f9c7db, type: 3}
   tvTablePrefabs:
   - {fileID: 100006, guid: 275af2b0718fd14458eacd3fc16400a8, type: 3}
   - {fileID: 100006, guid: ef18cf68e5c7efc49b863727df55dff7, type: 3}
+  - {fileID: 100006, guid: a612c4d2240bc4c4082676afc217a61c, type: 3}
   coffeeTablePrefabs:
   - {fileID: 100000, guid: 3f80adb8cf0fdec4ebee1e2103a3e242, type: 3}
   - {fileID: 100004, guid: 6aefd9b8d8cb28f4f87b54d78bf0fca3, type: 3}
+  - {fileID: 100000, guid: 395f9d952fa0b6c489ca4a50a9f95953, type: 3}
   lampPrefabs:
   - {fileID: 100002, guid: f4383bc7fc56a1e44b009cab877fd6c7, type: 3}
   - {fileID: 100000, guid: 5ab7df4388e0265499e7e58faf1d6aed, type: 3}
+  - {fileID: 100004, guid: ab7e43b46e30f5a409fe73d7d545bfa4, type: 3}
   officeTablePrefabs:
   - {fileID: 100004, guid: 89131f46d6bfc864699138153a2cc996, type: 3}
   - {fileID: 100002, guid: da90dd5c59fc7b74797111fdae04254f, type: 3}
+  - {fileID: 100004, guid: 67cb79763e804ca4694d2886c5a12c32, type: 3}
   chairPrefabs:
   - {fileID: 100000, guid: d2a377b97363a554a96a26b876de1213, type: 3}
   - {fileID: 100004, guid: 01dfb375646cba84e9b92e2cedf7d149, type: 3}
+  - {fileID: 100000, guid: c22bd7536dbf42648a4aaa69d2296f8a, type: 3}
   kitchenChairPrefabs:
   - {fileID: 100000, guid: 410463ba8bd9a484cb3ab355dc962d1d, type: 3}
   - {fileID: 100000, guid: d2e8f5ae9d0a8254caea1280c3c506db, type: 3}
+  - {fileID: 100000, guid: 3086031236da6a1439bc639bf056f28e, type: 3}
   kitchenTablePrefabs:
   - {fileID: 100002, guid: 398008aaa9b8a2e4ebd3860a13db4038, type: 3}
   - {fileID: 100002, guid: 4df135dcff5ef7b488faeec987a0fe1c, type: 3}
+  - {fileID: 100002, guid: e11f20d383811cc44b38595dc7f58b7e, type: 3}
   kitchenShelfPrefabs:
   - {fileID: 100000, guid: da7880317cad2524a93cbb6056bbc922, type: 3}
   - {fileID: 100002, guid: bcf7f5659c394f04f947cb579e955ca3, type: 3}
   - {fileID: 100000, guid: 42c6e98b6173bba45988eeb900c9284a, type: 3}
   - {fileID: 100002, guid: 277f63093aeaf69448a08d7ad9e8ef5b, type: 3}
+  - {fileID: 100000, guid: 501964d5ccb13ea489711bf004ce4b93, type: 3}
+  - {fileID: 100002, guid: 757b89ad32a6e5a4db57b95d429cda74, type: 3}
   modularKitchenTablePrefabs:
   - {fileID: 100010, guid: 7d0701320ee303d439feed9498b8d336, type: 3}
   - {fileID: 100000, guid: 66e6284526c4a2645a28827f82a71cfd, type: 3}
@@ -88,20 +104,64 @@ MonoBehaviour:
   - {fileID: 100010, guid: 16674050c10b0334bb8d7e58afd9d5a5, type: 3}
   - {fileID: 100000, guid: 0d1191b2b61683f44a17f949574e6295, type: 3}
   - {fileID: 100000, guid: a6fb6ef3649e2ff469b508fb6a3175c4, type: 3}
+  - {fileID: 100010, guid: aa6203885ac44164a81e3220f932deb0, type: 3}
+  - {fileID: 100000, guid: c918685c534e7f247acce3cf6caaf5b2, type: 3}
+  - {fileID: 100000, guid: cb369d32b24f327449b6068f293c3aa1, type: 3}
   washbasinPrefabs:
-  - {fileID: 100022, guid: 47af50246352ed14da4ade618d736175, type: 3}
+  - {fileID: 100022, guid: e15a30007e9915e4cba6fcaf77df212f, type: 3}
   - {fileID: 100022, guid: a8d03c5128adf9544b831826ca6b3943, type: 3}
+  - {fileID: 100022, guid: 47af50246352ed14da4ade618d736175, type: 3}
   paintMaterials:
   - {fileID: 6132123089402033757, guid: 6cb8ee3ba2939e648822b369dc6e1a6b, type: 3}
   - {fileID: 6132123089402033757, guid: 0fd92f8c154343b4ab2136b5ee2980c0, type: 3}
+  - {fileID: 6132123089402033757, guid: 91c5b74f67f5c0443bc6fbaf3067f25a, type: 3}
+  - {fileID: 6132123089402033757, guid: 0a242b112cc76af4ba2a8e2576518e5d, type: 3}
+  - {fileID: 6132123089402033757, guid: 62d96629f5b6f3545b1f2e0f56d44971, type: 3}
+  - {fileID: 6132123089402033757, guid: 1a3d39cae1fb585498dcae78166a171f, type: 3}
+  - {fileID: 6132123089402033757, guid: fabea193fd130f14a976ce4c21d41e9f, type: 3}
+  - {fileID: 6132123089402033757, guid: ab4a1e4585483f249b089b83b6f53cf1, type: 3}
+  - {fileID: 6132123089402033757, guid: caf8fb6bcebee01448bf2f6e303b3a58, type: 3}
+  - {fileID: 6132123089402033757, guid: 1313919448ac00343bd8c778d74b19e0, type: 3}
+  - {fileID: 6132123089402033757, guid: c155e90ae96a16147a3c7ec2b1fd84a2, type: 3}
+  - {fileID: 6132123089402033757, guid: b2780935cd17b9d42a1b6eacb77b3050, type: 3}
+  - {fileID: 6132123089402033757, guid: 59e87ae71bb2f784db25c5e23063de54, type: 3}
   floorMaterials:
   - {fileID: 6132123089402033757, guid: 4830729adc9cd3f4fb8fa22936a42571, type: 3}
-  - {fileID: 6132123089402033757, guid: da409b2fa0a098d4d8304136dd650d5d, type: 3}
+  - {fileID: 6132123089402033757, guid: 683d40eda05a41a408d8669d2819692e, type: 3}
+  - {fileID: 6132123089402033757, guid: 85b7fee529cf57744b338ef84388112b, type: 3}
+  - {fileID: 6132123089402033757, guid: b834555af8bde5a46abde2cb816a0b0d, type: 3}
+  - {fileID: 6132123089402033757, guid: cf24ea4fb8f43464cbddc928ce36380c, type: 3}
+  - {fileID: 6132123089402033757, guid: 7651b7a68cf5fd64ab85c7b7e19ba91f, type: 3}
+  - {fileID: 6132123089402033757, guid: fe987bb16e95cb84c8831dcf68d52b53, type: 3}
+  - {fileID: 6132123089402033757, guid: 9b643e71ce9c8b144ba0156b16ab7257, type: 3}
+  - {fileID: 6132123089402033757, guid: 122c296ca4aaff04fb484914ab7db09e, type: 3}
+  - {fileID: 6132123089402033757, guid: c3ba3b378270399488e42ff6edc253a6, type: 3}
+  - {fileID: 6132123089402033757, guid: e2793e45741910b488c8469a067d97f0, type: 3}
   - {fileID: 6132123089402033757, guid: 4731181f205065a419735cd60b840125, type: 3}
   roomPaintMaterials:
   - {fileID: 2100000, guid: 3434263bb31b4824a8957b28338960c5, type: 2}
   - {fileID: 2100000, guid: 135082a51b312ed429b9641a1de20d2c, type: 2}
+  - {fileID: 2100000, guid: 1400f45672d3a794591edba23474a2c6, type: 2}
+  - {fileID: 2100000, guid: d7493963af914f041b0b1c94f3d918b0, type: 2}
+  - {fileID: 2100000, guid: e39eb9ef04bf0ac498f62c603dc6d353, type: 2}
+  - {fileID: 2100000, guid: 20a5a21033f85c64f9114acc1f68dbe0, type: 2}
+  - {fileID: 2100000, guid: 950b8b774a64afb40ad9aef316d5c1a5, type: 2}
+  - {fileID: 2100000, guid: 8ed3c77e388c53446bbe8d0e965e3368, type: 2}
+  - {fileID: 2100000, guid: a5e7e4ccdc368f44180ad52270e27726, type: 2}
+  - {fileID: 2100000, guid: 974545a786da1f341bd7ac25621f163d, type: 2}
+  - {fileID: 2100000, guid: 8aa7623c93606884bbbf9608d6e7f900, type: 2}
+  - {fileID: 2100000, guid: e910f1af27aaeb04c8d86127759cb3be, type: 2}
+  - {fileID: 2100000, guid: a9d363408f829544390940d8dc2d4eeb, type: 2}
   roomFloorMaterials:
   - {fileID: 2100000, guid: ba432c7041a740945b529429ca1027d9, type: 2}
-  - {fileID: 2100000, guid: 7a5ec6879e96a9040806dec7912f938d, type: 2}
+  - {fileID: 2100000, guid: 7a3a8c8697416fc4da9213d0c34aa890, type: 2}
+  - {fileID: 2100000, guid: 2656d612ceefb534aa988e2d98572d5d, type: 2}
+  - {fileID: 2100000, guid: c57a584052a9d0d40a7ab4d211a712b0, type: 2}
+  - {fileID: 2100000, guid: bf7ed8eaadb2e8c418836db89675d668, type: 2}
+  - {fileID: 2100000, guid: 9f0c9f72243ccda4082c2db28c1c1369, type: 2}
+  - {fileID: 2100000, guid: 6ac9def6a3723614fac8bd58bce1aee4, type: 2}
+  - {fileID: 2100000, guid: 12a65e0e3c5e1a94095b2a6e0fabc3d8, type: 2}
+  - {fileID: 2100000, guid: 1dd0a1322301f8f49bce775c80fd66fe, type: 2}
+  - {fileID: 2100000, guid: f987d0877a366f64cb3801baa53435cc, type: 2}
+  - {fileID: 2100000, guid: c6803c3ec1bbe2f4ab349f95fb0f388e, type: 2}
   - {fileID: 2100000, guid: 5531d92ee6fe67b44b21787aea612c60, type: 2}

@@ -1992,8 +1992,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: A collaborative app between designer and clients for finding interior design
-    direction.
+  m_Text: A collaborative Augmented Reality app made for designer and clients for
+    finding interior design direction.
 --- !u!222 &705969171
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2911,6 +2911,7 @@ MonoBehaviour:
   aRModelPrefabs:
   - {fileID: 6946006516134407196, guid: 81d8fa174ee76d94e88d9be79243ca1b, type: 3}
   - {fileID: 6946006516134407196, guid: 32edb9eb0917394409e07fa48fc417d7, type: 3}
+  - {fileID: 6946006516134407196, guid: 8bcc3740f4b814a419747ff0b414f1a1, type: 3}
   selectedARModelPrefab: {fileID: 0}
   roomName: 
   roomKey: 

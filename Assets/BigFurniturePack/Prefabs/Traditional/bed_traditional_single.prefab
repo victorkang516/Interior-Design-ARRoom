@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc21cc8dd178efd4ca452fe916fcad2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectName: Traditional Bed Single
+  ObjectName: Traditional Single Bed
   Thumbnail: {fileID: 21300000, guid: 8faae6e6b828b4f408fcadf8e719ce3b, type: 3}
 --- !u!114 &4448792949672696248
 MonoBehaviour:

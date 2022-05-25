@@ -75,7 +75,7 @@ public class ARManager : MonoBehaviour
 
     private void InitializeUI()
     {
-        if (selectedARModel.modelType == ModelType.Studio)
+        if (selectedARModel.modelType == ModelType.Studio && selectedARModel.modelType == ModelType.TwoBedroomUnit)
             floorTriggerPanel.SetActive(false);
         else if (selectedARModel.modelType == ModelType.Loft)
             floorTriggerPanel.SetActive(true);
